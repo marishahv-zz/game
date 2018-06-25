@@ -26,8 +26,7 @@ export class TaskController {
                 this.isCorrect = false;
             }
             setTimeout(() => {
-                this.closeModal();
-                this.view.hideElement(this.view.draggableDiv);
+                this.closeModal();                
             }, 1500);
         };
 
@@ -53,12 +52,7 @@ export class TaskController {
                 this.isCorrect = false;
             }
             setTimeout(() => {
-                this.closeModal();
-                setTimeout(() => {
-                    this.view.clearEnglish();
-                    this.view.clearAudio();
-                    this.view.clearMath();
-                }, 500);
+                this.closeModal();               
             }, 1500);
         };
         this.init();
@@ -78,6 +72,10 @@ export class TaskController {
 
     closeModal(){
         this.view.toggleModal();
+        this.view.clearEnglish();
+        this.view.clearAudio();
+        this.view.clearMath();
+        this.view.hideElement(this.view.draggableDiv);
     };
 
     initMathTask(){

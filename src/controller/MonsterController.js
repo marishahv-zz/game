@@ -1,4 +1,5 @@
 import {Monster} from "../model/Monster";
+import * as APPEARANCE from "../constants/appearance";
 import {MonsterView} from "../view/MonsterView";
 import {Utils} from "../utils/Utils";
 import Konva from 'konva';
@@ -12,12 +13,12 @@ export class MonsterController {
         this.layer = new Konva.Layer({           
             listening: true
         });
-        this.group = new Konva.Group({
-            x: (window.innerWidth - (window.innerWidth / 5)),
-            y: window.innerHeight - 420,
+        this.group = new Konva.Group({          
+            x: APPEARANCE.COORDINATES.monster.x,
+            y: APPEARANCE.COORDINATES.monster.y,
             id: "monsterId"
         });
-    };   
+    };
 
     createMonster (){
         let monsterBodyArr = [];
@@ -26,61 +27,76 @@ export class MonsterController {
         this.utils.getImages(this.monster.body)
         .then((images) => {
             images.forEach((bodyPart, index) => {
+
                 let konvaImage = new Konva.Image({
                     image: bodyPart,
-                    width: (function(){
-                            switch (index) {
-                                case 0:
-                                    return 210;     
-                                    break;
-                                case 1:
-                                    return 215;
-                                    break;
-                                default: return 220;
-                            }
-                        })(),
-                    height: (function(){
-                            switch (index) {
-                                case 0:
-                                    return 190;
-                                    break;
-                                case 1:
-                                    return 215;
-                                    break;
-                                default: return 220;
-                            }
-                        })(),
-                    x: (function(){
-                            switch (index) {
-                                case 0:
-                                    return 39;
-                                    break;
-                                case 1:
-                                    return 5;
-                                    break;
-                                case 2:
-                                    return 2;
-                                    break;
-                            }
-                        })(),
-                    y:  (function(){
-                        switch (index) {
-                            
-                            case 1:
-                                return 72;
-                                break;
-                            case 2:
-                                return 158;
-                                break;
-                            default: return 0;
-                        }
-                    })()
+                    width: this.getBodyPartWidth(index),                    
+                    height: this.getBodyPartHeight(index),                     
+                    x: this.getBodyPartPositionX(index),                    
+                    y: this.getBodyPartPositionY(index)                    
                 });
+                
                 this.group.add(konvaImage);
                 this.layer.add(this.group);
                 this.monsterView.displayLayer(this.layer);           
             });
         });
+    };   
+
+    getBodyPartWidth(index){
+        switch (index) {
+            case 0:
+                return APPEARANCE.HEROES.monster.width.head;    
+                break;
+            case 1:
+                return APPEARANCE.HEROES.monster.width.body;
+                break;
+            case 2:
+                return APPEARANCE.HEROES.monster.width.feet;
+                break;
+        }
+    };
+
+    getBodyPartHeight(index){
+        switch (index) {
+            case 0:
+                return APPEARANCE.HEROES.monster.height.head;
+                break;
+            case 1:
+                return APPEARANCE.HEROES.monster.height.body;
+                break;
+            case 2:
+                return APPEARANCE.HEROES.monster.height.feet;
+                break;
+        }
+    };
+
+    getBodyPartPositionX(index){
+        switch (index) {
+            case 0:
+                return APPEARANCE.HEROES.monster.bodyPartPositionX.head;
+                break;
+            case 1:
+                return APPEARANCE.HEROES.monster.bodyPartPositionX.body;
+                break;
+            case 2:
+                return APPEARANCE.HEROES.monster.bodyPartPositionX.feet;
+                break;
+        }
+    };
+
+    getBodyPartPositionY(index){
+        switch (index) {
+            case 0:
+                return APPEARANCE.HEROES.monster.bodyPartPositionY.head;
+                break;
+            case 1:
+                return APPEARANCE.HEROES.monster.bodyPartPositionY.body;
+                break;
+            case 2:
+                return APPEARANCE.HEROES.monster.bodyPartPositionY.feet;
+                break;                            
+        }
     };
     
     monsterMove (){     
