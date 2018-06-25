@@ -1,4 +1,5 @@
 import Konva from 'konva';
+import * as APPEARANCE from "../constants/appearance";
 
 export class MonsterView{
 
@@ -15,9 +16,9 @@ export class MonsterView{
         return new Konva.Animation(function(frame) {           
             let position = layer.getAbsolutePosition();           
 
-            // workarownd due to uexpected behavior of Konva getAbsolutePosition() method.
-            if (position.x > -(that.stage.width() / 7)) {
-                layer.move({ x: -3, y: 0}); 
+            // workarownd due to unxpected behavior of Konva getAbsolutePosition() method.
+            if (position.x > -(that.stage.width() / APPEARANCE.COORDINATES.monster.xStop)) {
+                layer.move({ x: APPEARANCE.COORDINATES.monster.xShift, y: 0}); 
             }            
         }, layer);  
     };  
@@ -30,9 +31,8 @@ export class MonsterView{
         if(animation.isRunning()){
             animation.stop();
         }        
-    };     
-
-    // Is not working yet
+    }; 
+       
     removeLayer(layer){       
         layer.destroyChildren();        
         layer.destroy();        
