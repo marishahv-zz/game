@@ -1,17 +1,16 @@
-import { Task } from "../model/Task";
-import {Utils} from "../utils/Utils";
+
 import { Audio } from "../model/Audio";
 import isArray from 'lodash/isArray';
 import $ from "jquery";
 import 'webpack-jquery-ui/sortable';
+import { keyBoardEvents } from "../constants/keys";
 
 
 export class TaskController {
     constructor(model, view) {
         this.view = view;
         this.model = model;
-        this.backMusic = new Audio();
-        this.utils = new Utils();
+        this.backMusic = new Audio();        
         this.result = "";
         this.isCorrect = null;
         this.checkDraggableResult = async (evt) => {
@@ -58,13 +57,12 @@ export class TaskController {
         this.init();
     };
 
-    init() {
-        // this.view.spellButton.addEventListener("click", this.checkInputResult, false);
+    init() {        
         this.view.inputResult.addEventListener("keypress", this.preventDefaultEvent, false);
     };
 
     preventDefaultEvent(evt){
-        if (evt.keyCode == 13) {
+        if (evt.keyCode == keyBoardEvents.enter) {
             evt.preventDefault();
             return false;
         }
@@ -94,13 +92,13 @@ export class TaskController {
     initDraggableTask() {
         this.view.toggleModal();
         this.view.hideElement(this.view.taskDiv);
-        // this.view.spellButton.removeEventListener("click", this.checkInputResult, false);
-        // this.view.spellButton.addEventListener("click", this.checkDraggableResult, false);
+        
         $("#wordblock").sortable();
         $("#wordblock").disableSelection();
+        
         this.view.spellButton.setAttribute("draggable", "true");
         let word = this.model.draggbleLetters.correct;
-        let letters = this.utils.shuffleItems(word);
+        let letters = this.model.shuffleItems(word);
         this.result = word;
 
         this.view.displayDraggable(letters);
@@ -115,19 +113,14 @@ export class TaskController {
     };
 
     initAudioTask(){
-        this.backMusic.battleMusic.volume = 0.2;
+        this.backMusic.battleMusic.volume = 0.2;       // TODO magic numbers!!!!!!!!!!!!!!!!!!!
         this.view.toggleModal();
-        this.view.displayAudio();
-        var synth = window.speechSynthesis;
-        let word = this.model.english.word;
-        this.result = word;
+        this.view.displayAudio();        
+        this.result = this.model.word;
 
         this.view.listenBtn.onclick = (event) => {
             event.preventDefault();
-
-            var utterThis = new SpeechSynthesisUtterance(word);
-            utterThis.voice = synth.getVoices()[0];
-            synth.speak(utterThis);
+            this.model.getSynthesisUtterance(speechSynthesis);
         }
     };
 }
