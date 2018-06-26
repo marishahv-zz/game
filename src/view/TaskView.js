@@ -2,15 +2,16 @@
 import {TaskController} from "../controller/TaskController";
 import $ from "jquery";
 import 'webpack-jquery-ui/sortable';
+import { messages } from "../constants/messages";
 
 export class TaskView {
-    constructor() {    
-        this.init();        
+    constructor() {
+        this.init();
     };
-    
-    init() {         
-        this.modal = document.querySelector(".modal");              
-        this.taskDiv = document.querySelector(".task-wrapper"); 
+
+    init() {
+        this.modal = document.querySelector(".modal");
+        this.taskDiv = document.querySelector(".task-wrapper");
         this.mathDiv = document.querySelector(".math-content");
         this.englishDiv = document.querySelector(".english-content");
         this.draggableDiv = document.getElementById("wordblock");
@@ -43,8 +44,8 @@ export class TaskView {
 
     displayMath(mathExpressionObj){
         this.displayElement(this.taskDiv);
-        this.displayElement(this.mathDiv); 
-        this.displayHeading("Please, solve the task.");
+        this.displayElement(this.mathDiv);
+        this.displayHeading(messages.mathTaskTxt);
         this.spanOperand_1.innerText = mathExpressionObj.operand_1;
         this.spanOperand_2.innerText = mathExpressionObj.operand_2;
         this.spanOperator.innerText = mathExpressionObj.operator;
@@ -54,57 +55,57 @@ export class TaskView {
     clearMath(){
         this.spanOperand_1.innerText = "";
         this.spanOperand_2.innerText = "";
-        this.spanOperator.innerText = "";       
-        this.clearInput();        
-        this.hideElement(this.mathDiv); 
+        this.spanOperator.innerText = "";
+        this.clearInput();
+        this.hideElement(this.mathDiv);
         this.hideElement(this.taskDiv);
     };
 
     clearInput(){
         this.inputResult.value = "";
-        this.inputResult.style.border = "4px solid #006D9C"; 
+        this.inputResult.style.border = "4px solid #006D9C";
         this.tooltip.style.visibility = "hidden";
     };
 
     displayEnglish(word){
         this.displayElement(this.taskDiv);
         this.displayElement(this.englishDiv);
-        this.displayHeading("Translate the word.");
+        this.displayHeading(messages.englishTaskTxt);
         this.inputResult.style.width = "100%";
         let span = document.getElementById("word1");
         span.innerText = word;
     };
 
-    clearEnglish(){      
+    clearEnglish(){
         this.clearInput();
-        this.hideElement(this.englishDiv); 
+        this.hideElement(this.englishDiv);
         this.hideElement(this.taskDiv);
-        this.inputResult.style.width = "3.5rem"; 
+        this.inputResult.style.width = "3.5rem";
         let span = document.getElementById("word1");
-        span.innerText = "";        
+        span.innerText = "";
     };
 
     displayDraggable(letters){
         this.displayElement(this.draggableDiv);
-        this.displayHeading("Drag the letters and drop them in correct order.");        
-        const divs = [];        
-        for (let i = 0; i < letters.length; i++) {          
+        this.displayHeading(messages.DraggableTaskTxt);
+        const divs = [];
+        for (let i = 0; i < letters.length; i++) {
           divs.push('<div>' + letters[i] + '</div>');
-        }      
+        }
         $('#wordblock').html(divs.join(''));
     };
 
     displayAudio(){
         this.displayElement(this.taskDiv);
-        this.displayHeading("Listen to the word and enter it."); 
-        this.inputResult.style.width = "100%"; 
+        this.displayHeading(messages.AudioTaskTxt);
+        this.inputResult.style.width = "100%";
         this.displayElement(document.querySelector(".audio-btn"));
     };
 
     clearAudio(){
         this.hideElement(document.querySelector(".audio-btn"));
         this.hideElement(this.taskDiv);
-        this.inputResult.style.width = "3.5rem"; 
+        this.inputResult.style.width = "3.5rem";
     }
 
     displayHeading(text){
@@ -112,13 +113,13 @@ export class TaskView {
         h1.innerText = text;
     };
 
-    changeInputStyle(boolean){        
+    changeInputStyle(boolean){
         if(boolean){
-            this.inputResult.style.border = "4px solid #12AF1B";            
-            this.tooltip.style.visibility = "hidden";            
+            this.inputResult.style.border = "4px solid #12AF1B";
+            this.tooltip.style.visibility = "hidden";
         }
         else {
-            this.inputResult.style.border = "4px solid #f26f6f";            
+            this.inputResult.style.border = "4px solid #f26f6f";
             this.tooltip.style.visibility = "visible";
         };
     }
