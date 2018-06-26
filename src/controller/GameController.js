@@ -170,9 +170,13 @@ export class GameController {
   }
 
 //?
-  checkTaskAnsver(ev){
+  async checkTaskAnsver(ev){
     ev.preventDefault();
-    setTimeout(()=>{
+    if(ev.target.getAttribute("draggable")){
+      await this.taskController.checkDraggableResult(ev);
+    }else{
+      await this.taskController.checkInputResult(ev);
+    }
       this.taskController.view.spellButton.removeEventListener("click", this.taskController.checkInputResult, false);
       this.taskController.view.spellButton.removeEventListener("click", this.taskController.checkDraggableResult, false);
       if(!this.ansverSend){
@@ -208,7 +212,6 @@ export class GameController {
         }
         this.hpCharactersTrigger();
       }
-    },100);
   };
 
   stopGame(){

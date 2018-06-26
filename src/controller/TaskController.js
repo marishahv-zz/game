@@ -14,7 +14,7 @@ export class TaskController {
         this.utils = new Utils();
         this.result = "";
         this.isCorrect = null;
-        this.checkDraggableResult = (evt) => {
+        this.checkDraggableResult = async (evt) => {
             evt.preventDefault();
             let isCorrect = this.isDraggableCorrect();
             if(isCorrect){
@@ -26,11 +26,11 @@ export class TaskController {
                 this.isCorrect = false;
             }
             setTimeout(() => {
-                this.closeModal();                
+                this.closeModal();
             }, 1500);
         };
 
-        this.checkInputResult = (evt) => {
+        this.checkInputResult = async (evt) => {
             evt.preventDefault();
             let isCorrect;
             if(isArray(this.result)){
@@ -52,14 +52,14 @@ export class TaskController {
                 this.isCorrect = false;
             }
             setTimeout(() => {
-                this.closeModal();               
+                this.closeModal();
             }, 1500);
         };
         this.init();
     };
 
-    init() {        
-        this.view.spellButton.addEventListener("click", this.checkInputResult, false);
+    init() {
+        // this.view.spellButton.addEventListener("click", this.checkInputResult, false);
         this.view.inputResult.addEventListener("keypress", this.preventDefaultEvent, false);
     };
 
@@ -67,7 +67,7 @@ export class TaskController {
         if (evt.keyCode == 13) {
             evt.preventDefault();
             return false;
-        }       
+        }
     };
 
     closeModal(){
@@ -76,6 +76,7 @@ export class TaskController {
         this.view.clearAudio();
         this.view.clearMath();
         this.view.hideElement(this.view.draggableDiv);
+        this.view.spellButton.removeAttribute("draggable");
     };
 
     initMathTask(){
@@ -93,12 +94,11 @@ export class TaskController {
     initDraggableTask() {
         this.view.toggleModal();
         this.view.hideElement(this.view.taskDiv);
-        this.view.spellButton.removeEventListener("click", this.checkInputResult, false);
-        this.view.spellButton.addEventListener("click", this.checkDraggableResult, false);
-
+        // this.view.spellButton.removeEventListener("click", this.checkInputResult, false);
+        // this.view.spellButton.addEventListener("click", this.checkDraggableResult, false);
         $("#wordblock").sortable();
         $("#wordblock").disableSelection();
-
+        this.view.spellButton.setAttribute("draggable", "true");
         let word = this.model.draggbleLetters.correct;
         let letters = this.utils.shuffleItems(word);
         this.result = word;
@@ -118,7 +118,6 @@ export class TaskController {
         this.backMusic.battleMusic.volume = 0.2;
         this.view.toggleModal();
         this.view.displayAudio();
-
         var synth = window.speechSynthesis;
         let word = this.model.english.word;
         this.result = word;

@@ -16,14 +16,3 @@ const gameController = new GameController(gameView,stage);
 
 gameView.initMenueListener(gameController.startGame.bind(gameController));
 gameView.initNameOfHeroListner(gameController.checkPressedKey);
-
-async function foo() {
-    console.log('async working!')
-};
-
-async function bar() {
-    await foo()
-    console.log('after foo')
-};
-
-bar();
