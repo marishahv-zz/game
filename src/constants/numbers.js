@@ -1,4 +1,5 @@
 export  const numbers ={
+  "battleMusicMinvolume" : 0.2,
   "zero" : 0 ,
   "heroDmg" : 50 ,
   "monsterDmg" : 50 ,

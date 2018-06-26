@@ -4,24 +4,22 @@ import * as APPEARANCE from "../constants/appearance";
 export class MonsterView{
 
     constructor(stage){
-        this.stage = stage;        
-    };  
+        this.stage = stage;
+    };
 
     displayLayer(layer){
         this.stage.add(layer);
     };
 
-    initAnimationMove(layer){        
-        let that = this;                 
-        return new Konva.Animation(function(frame) {           
-            let position = layer.getAbsolutePosition();           
-
-            // workarownd due to unxpected behavior of Konva getAbsolutePosition() method.
-            if (position.x > -(that.stage.width() / APPEARANCE.COORDINATES.monster.xStop)) {
-                layer.move({ x: APPEARANCE.COORDINATES.monster.xShift, y: 0}); 
-            }            
-        }, layer);  
-    };  
+    initAnimationMove(layer){
+        let that = this;
+        return new Konva.Animation(function(frame) {
+            let position = layer.getAbsolutePosition();
+            if (position.x > -(that.stage.width() / APPEARANCE.COORDINATES.monster.xStop)) {//
+                layer.move({ x: APPEARANCE.COORDINATES.monster.xShift, y: 0}); //
+            }
+        }, layer);
+    };
 
     startAnimation(animation){
         animation.start();
@@ -30,11 +28,11 @@ export class MonsterView{
     stopAnimation(animation){
         if(animation.isRunning()){
             animation.stop();
-        }        
-    }; 
-       
-    removeLayer(layer){       
-        layer.destroyChildren();        
-        layer.destroy();        
+        }
+    };
+
+    removeLayer(layer){
+        layer.destroyChildren();
+        layer.destroy();
     };
 }

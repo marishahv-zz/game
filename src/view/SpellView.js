@@ -29,7 +29,6 @@ export class SpellView {
 
   initSpellAnimationMonster(SpellAnimation,layer){
     this.spellLoopMonster = new Konva.Animation(function(frame) {
-     //вызываем фунцкию которая отвечает за поведение спрайта
      SpellAnimation(this.spellLoopMonster)
     },layer);
   }
