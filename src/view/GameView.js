@@ -38,37 +38,6 @@ export class GameView {
     }, layer);
     this.levelLoop.start();
   };
-  //
-  // initAnsverListener(func){
-  //   this.spellButton.addEventListener("click",func);
-  // };
-  // initKeyDownEventListener(func){
-  //   document.addEventListener('keydown',func);
-  // };
-  //
-  // initKeyUpEventListener(func){
-  //   document.addEventListener('keyup',func);
-  // };
-  //
-  // initNameOfHeroListner(func){
-  //   this.nameOfHero.addEventListener('keypress',func);
-  // };
-  //
-  // initMenueListener(func){
-  //   this.menueContainer.addEventListener('click',func);
-  // };
-  //
-  // initSpellListListener(func){
-  //   this.spellsListContainer.addEventListener('click',func)
-  // };
-  //
-  // initFirstAudioSpellListListener(func){
-  //   this.spellsListContainer.addEventListener('mouseover',func)
-  // };
-  //
-  // initSecondAudioSpellListListener(func){
-  //   this.spellsListContainer.addEventListener('mouseout',func)
-  // };
 
   renderNextLevel(){
     this.canvasBackground.style.background = `url(images/backgrounds/${this.arrBackgroung[random(0, 2)]})no-repeat fixed center`;
