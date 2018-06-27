@@ -11,7 +11,10 @@ import { MonsterView } from "../view/MonsterView";
 import { Audio } from "../model/Audio";
 import { TaskController } from "../controller/TaskController";
 import { TaskView } from "../view/TaskView";
-import { Task } from "../model/Task";
+import { MathTask } from "../model/MathTask";
+import { EnglishTask } from "../model/EnglishTask";
+import { DraggableTask } from "../model/DraggableTask";
+import { AudioTask } from "../model/AudioTask";
 import {Utils} from "../utils/Utils";
 import { Timer } from "../model/Timer";
 import { keyBoardEvents } from "../constants/keys";
@@ -163,22 +166,34 @@ export class GameController {
     switch (spellId) {
       case inCase.fireBall:
         setTimeout(()=>{
-          this.taskController.initMathTask()
+          this.task = new MathTask();
+          this.taskView = new TaskView();
+          this.taskController = new TaskController(this.task, this.taskView);
+          this.taskController.initMathTask();
         },1000);
         break;
       case inCase.iceWodge:
         setTimeout(()=>{
-          this.taskController.initEnglishTask()
+          this.task = new EnglishTask();
+          this.taskView = new TaskView();
+          this.taskController = new TaskController(this.task, this.taskView);
+          this.taskController.initEnglishTask();
         },1000);
         break;
       case inCase.cuttingWind:
         setTimeout(()=>{
-          this.taskController.initDraggableTask()
+          this.task = new DraggableTask();
+          this.taskView = new TaskView();
+          this.taskController = new TaskController(this.task, this.taskView);
+          this.taskController.initDraggableTask();
         },1000);
         break;
       case inCase.stoneWodge:
         setTimeout(()=>{
-          this.taskController.initAudioTask()
+          this.task = new AudioTask();
+          this.taskView = new TaskView();
+          this.taskController = new TaskController(this.task, this.taskView);
+          this.taskController.initAudioTask();
         },1000);
         break;
       default:
@@ -193,12 +208,9 @@ export class GameController {
         this.gameView.showHideSpellsList(this.player);
         this.spellController.createPlayerSpell(ev.target.parentNode.id);
         this.spellController.createMonsterSpell();
-        this.task = new Task();
-        this.taskView = new TaskView();
-        this.taskController = new TaskController(this.task, this.taskView);
         this.takeTaskForSpell(ev.target.parentNode.id);
       }
-  }
+  };
 
   playerAttack(){
     this.audio.playAudio(this.audio.taskAccept);

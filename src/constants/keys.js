@@ -8,5 +8,6 @@ export const keyBoardEvents = {
    "figureBracket" :  123,
    "tilda" :126 ,
    "left" : "left" ,
-   "right" : "right"
+   "right" : "right",
+   "enter": 13
 };
