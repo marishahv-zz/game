@@ -181,46 +181,50 @@ export class GameController {
       }
   };
 
+  playerAttack(){
+    this.audio.playAudio(this.audio.taskAccept);
+    this.monster.getDamaged(numbers.heroDmg);
+    setTimeout(()=>{
+      this.audio.playAudio(this.audio.playerCasts);
+      this.spellController.playerCastSpell(this.playerController);
+      this.ansverSend = false;
+      this.gameView.renderHpMonster(this.monster);
+    },2000);
+  }
+
+  monsterAttack(){
+    this.audio.playAudio(this.audio.taskDecline);
+    this.player.getDamaged(numbers.monsterDmg);
+    setTimeout(()=>{
+      this.audio.playAudio(this.audio.playerCasts);
+      this.spellController.monsterCastSpell();
+      this.ansverSend = false;
+      this.gameView.renderHpHero(this.player);
+    },2000);
+    setTimeout(()=>{
+      this.playerController.palayerGetDmg = true;
+    },3200)
+    setTimeout(()=>{
+      this.playerController.palayerGetDmg = false;
+    },4000);
+  }
+
   async checkTaskAnsver(ev){
     ev.preventDefault();
     if(ev.target.getAttribute("draggable")){
       await this.taskController.checkDraggableResult(ev);
     }else{
       await this.taskController.checkInputResult(ev);
-    }      
+    }
     if(!this.ansverSend){
       this.ansverSend = true;
       if(this.taskController.isCorrect){
-        this.audio.playAudio(this.audio.taskAccept);
-        this.monster.getDamaged(numbers.heroDmg);
-        setTimeout(()=>{
-          this.audio.playAudio(this.audio.playerCasts);
-          this.spellController.playerCastSpell(this.playerController);
-          this.ansverSend = false;
-        },2000);
-        setTimeout(()=>{
-          this.gameView.renderHpMonster(this.monster);
-        },2000);
+        this.playerAttack()
       }else{
-        this.audio.playAudio(this.audio.taskDecline);
-        this.player.getDamaged(numbers.monsterDmg);
-        setTimeout(()=>{
-          this.audio.playAudio(this.audio.playerCasts);
-          this.spellController.monsterCastSpell();
-          this.ansverSend = false
-        },2000);
-        setTimeout(()=>{
-          this.playerController.palayerGetDmg = true;
-        },3200)
-        setTimeout(()=>{
-          this.playerController.palayerGetDmg = false;
-        },4000);
-        setTimeout(()=>{
-          this.gameView.renderHpHero(this.player);
-        },2000);
+        this.monsterAttack()
       }
       this.hpCharactersTrigger();
-    }
+     }      
   };
 
   stopGame(){

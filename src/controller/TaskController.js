@@ -4,7 +4,8 @@ import isArray from 'lodash/isArray';
 import $ from "jquery";
 import 'webpack-jquery-ui/sortable';
 import { keyBoardEvents } from "../constants/keys";
-
+import { messages } from "../constants/messages";
+import { numbers } from "../constants/numbers";
 
 export class TaskController {
     constructor(model, view) {
@@ -17,11 +18,11 @@ export class TaskController {
             evt.preventDefault();
             let isCorrect = this.isDraggableCorrect();
             if(isCorrect){
-                this.view.displayHeading("You win!");
+                this.view.displayHeading(messages.win);
                 this.isCorrect = true;
             }
             if(!isCorrect){
-                this.view.displayHeading("You lost!");
+                this.view.displayHeading(messages.lost);
                 this.isCorrect = false;
             }
             setTimeout(() => {
@@ -43,11 +44,11 @@ export class TaskController {
             this.view.changeInputStyle(isCorrect);
 
             if(isCorrect){
-                this.view.displayHeading("You win!");
+                this.view.displayHeading(messages.win);
                 this.isCorrect = true;
             }
             if(!isCorrect){
-                this.view.displayHeading("You lost!");
+                this.view.displayHeading(messages.lost);
                 this.isCorrect = false;
             }
             setTimeout(() => {
@@ -113,7 +114,7 @@ export class TaskController {
     };
 
     initAudioTask(){
-        this.backMusic.battleMusic.volume = 0.2;       // TODO magic numbers!!!!!!!!!!!!!!!!!!!
+        this.backMusic.battleMusic.volume = numbers.battleMusicMinvolume;
         this.view.toggleModal();
         this.view.displayAudio();        
         this.result = this.model.word;
