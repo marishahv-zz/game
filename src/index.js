@@ -14,5 +14,5 @@ const stage = new Konva.Stage({
 const gameView = new GameView();
 const gameController = new GameController(gameView,stage);
 
-gameView.initMenueListener(gameController.startGame.bind(gameController));
-gameView.initNameOfHeroListner(gameController.checkPressedKey);
+gameController.initMenueListener();
+gameController.initNameOfHeroListner();

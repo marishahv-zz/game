@@ -46,6 +46,37 @@ export class GameController {
     this.ansverSend = false;
   }
 
+  initAnsverListener(){
+    this.gameView.spellButton.addEventListener("click",this.checkTaskAnsver.bind(this));
+  };
+  initKeyDownEventListener(){
+    document.addEventListener('keydown',this.keyDownListener.bind(this));
+  };
+
+  initKeyUpEventListener(){
+    document.addEventListener('keyup',this.keyUpListener.bind(this));
+  };
+
+  initNameOfHeroListner(){
+    this.gameView.nameOfHero.addEventListener('keypress',this.checkPressedKey.bind(this));
+  };
+
+  initMenueListener(){
+    this.gameView.menueContainer.addEventListener('click',this.startGame.bind(this));
+  };
+
+  initSpellListListener(){
+    this.gameView.spellsListContainer.addEventListener('click',this.spellList.bind(this));
+  };
+
+  initFirstAudioSpellListListener(){
+    this.gameView.spellsListContainer.addEventListener('mouseover',this.startSoundCheckSpell.bind(this));
+  };
+
+  initSecondAudioSpellListListener(){
+    this.gameView.spellsListContainer.addEventListener('mouseout',this.stopSoundCheckSpell.bind(this));
+  };
+
   keyDownListener(ev){
     if(ev.keyCode === keyBoardEvents.rightArrow){
       this.playerController.presedKey=keyBoardEvents.right;
@@ -176,7 +207,7 @@ export class GameController {
         this.spellController = new SpellController(this.spellView);
         this.gameView.showHideSpellsList(this.player);
         this.spellController.createPlayerSpell(ev.target.parentNode.id);
-        this.spellController.createMonsterSpell();       
+        this.spellController.createMonsterSpell();
         this.takeTaskForSpell(ev.target.parentNode.id);
       }
   };
@@ -224,7 +255,7 @@ export class GameController {
         this.monsterAttack()
       }
       this.hpCharactersTrigger();
-     }      
+    }
   };
 
   stopGame(){
@@ -284,16 +315,16 @@ export class GameController {
     this.gameView.createHeroStatusBar(this.player);
     this.playerView = new PlayerView(this.stage);
     this.playerController = new PlayerController(this.player,this.playerView);
-    this.gameView.initKeyDownEventListener(this.keyDownListener.bind(this));
-    this.gameView.initKeyUpEventListener(this.keyUpListener.bind(this));
-    this.gameView.initAnsverListener(this.checkTaskAnsver.bind(this));
+    this.initKeyDownEventListener();
+    this.initKeyUpEventListener();
+    this.initAnsverListener();
     this.playerController.setCoordinatesSprites();
     this.playerController.createPlayer();
     this.playerController.playerCanWalk = true;
     this.gameView.initRenderLevel(this.RenderingLevel.bind(this),this.playerController.layer);
-    this.gameView.initSpellListListener(this.spellList.bind(this));
-    this.gameView.initFirstAudioSpellListListener(this.startSoundCheckSpell.bind(this));
-    this.gameView.initSecondAudioSpellListListener(this.stopSoundCheckSpell.bind(this));
+    this.initSpellListListener();
+    this.initFirstAudioSpellListListener();
+    this.initSecondAudioSpellListListener();
   }
 
   startGame(ev){

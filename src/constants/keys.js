@@ -9,5 +9,5 @@ export const keyBoardEvents = {
    "tilda" :126 ,
    "left" : "left" ,
    "right" : "right",
-   "enter": 32
+   "enter": 13
 };
