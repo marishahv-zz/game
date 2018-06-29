@@ -1,5 +1,6 @@
 import floor from 'lodash/floor';
 import random from 'lodash/random';
+import { MATH } from "../constants/tasks";
 
 export class MathTask {
     constructor(){          
@@ -24,8 +25,8 @@ export class MathTask {
         }   
     };
 
-    getMathOperation(){
-        return ["+", "-", "/", "*"][random(0, 3)];
+    getMathOperation(){        
+        return MATH.operations[random(0, MATH.operations.length - 1)];
     };
 
     createMathExpression(operand1, operand2, operator, result){
@@ -36,14 +37,14 @@ export class MathTask {
     };
 
     getSumExpression(){
-        let operand1 = random(500);    // TODO: magic numbers !!!!!!!!!!!!!!!!!
-        let operand2 =  random(500);
+        let operand1 = random(MATH.sum.upperBound);    
+        let operand2 =  random(MATH.sum.upperBound);
         return this.createMathExpression(operand1, operand2, "+", operand1 + operand2);
     };
 
     getSubtractionExpression(){
-        let operand1 = random(500);     // TODO: magic numbers !!!!!!!!!!!!!!!!!
-        let operand2 =  random(500);
+        let operand1 = random(MATH.subtraction.upperBound);     
+        let operand2 =  random(MATH.subtraction.upperBound);
         if((operand1 - operand2) < 0){
             return this.createMathExpression(operand2, operand1, "-", operand2 - operand1);
         }
@@ -52,15 +53,15 @@ export class MathTask {
     };
 
     getDivideExpression (){
-        let dividend = random(10, 1000);    // TODO: magic numbers !!!!!!!!!!!!!!!!!
-        let divisor =  random(1, 10);
+        let dividend = random(MATH.division.lowerDividend, MATH.division.upperDividend);    
+        let divisor =  random(MATH.division.lowerDivisor, MATH.division.upperDivisor);
         dividend = floor(dividend / divisor) * divisor;
         return this.createMathExpression(dividend, divisor,"/", dividend / divisor);
     };
 
     getMultiplyExpression(){
-        let operand1 = random(300); // TODO: magic numbers !!!!!!!!!!!!!!!!!
-        let operand2 =  random(10);
+        let operand1 = random(MATH.multiplication.upperBound); 
+        let operand2 =  random(MATH.multiplication.lowerBound);
         return this.createMathExpression(operand1, operand2, "*", operand1 * operand2);
     };
 
