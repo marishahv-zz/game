@@ -117,11 +117,11 @@ export class TaskController {
         this.backMusic.battleMusic.volume = numbers.battleMusicMinvolume;
         this.view.toggleModal();
         this.view.displayAudio();        
-        this.result = this.model.word;
+        this.result = this.model.word;        
 
         this.view.listenBtn.onclick = (event) => {
             event.preventDefault();
-            this.model.getSynthesisUtterance(speechSynthesis);
+            this.model.getSynthesisUtterance();
         }
-    };
+    };;
 }

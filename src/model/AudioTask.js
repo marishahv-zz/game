@@ -3,13 +3,13 @@ import random from 'lodash/random';
 
 export class AudioTask {
     constructor(){  
-        this.word = TASKS.ENGLISH.words[random(0, TASKS.ENGLISH.words.length - 1)].word;             
+        this.word = TASKS.ENGLISH.words[random(0, TASKS.ENGLISH.words.length - 1)].word;
+        this.speechSynth = window.speechSynthesis;             
     }; 
     
-    getSynthesisUtterance(speechSynthesis){ 
-        let speechSynth = window.speechSynthesis;            
+    getSynthesisUtterance(){                    
         let utterThis = new SpeechSynthesisUtterance(this.word);
-        utterThis.voice = speechSynth.getVoices()[0];
-        speechSynth.speak(utterThis);
+        utterThis.voice = this.speechSynth.getVoices()[0];
+        this.speechSynth.speak(utterThis);
     };
 }
