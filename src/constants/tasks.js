@@ -157,3 +157,23 @@ export const DRAGGABLE_LETTER = {
 		}
 	]
 };
+
+export const MATH = {
+	operations: ["+", "-", "/", "*"],
+	sum: {		
+		upperBound: 500
+	},
+	subtraction: {
+		upperBound: 500
+	}, 
+	division: {
+		lowerDividend: 10,
+		upperDividend: 1000,
+		lowerDivisor: 1,
+		upperDivisor: 10 
+	},
+	multiplication: {
+		lowerBound: 10,
+		upperBound: 300
+	}
+};
