@@ -16,5 +16,17 @@ export  const numbers ={
   "monsterSpellInitialCoordinateY" : window.innerHeight - 300 ,
   "monsterSpellFly" : 20 ,
   "playerSpellFly" : 20 ,
-  "playerCastBorder" :  window.innerWidth - 100
+  "playerCastBorder" :  window.innerWidth - 100,
+  "renderLevelSpellsListPause" : 1700,
+  "showTaskPause" : 1000,
+  "playerDmgedStart" : 1000,
+  "playerDmgedStop" : 1000,
+  "playerDiePause" : 2000,
+  "monsterDiePause" : 2000,
+  "battleSpellListPause" : 2000,
+  "playerCastSpellPause" : 700,
+  "showSpellPause" : 500,
+  "closeModalTaskPause" : 300,
+  "closeModalSpellPause" : 500,
+  "ansverSendPause" : 1000
 }

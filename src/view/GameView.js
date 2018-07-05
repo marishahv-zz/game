@@ -2,9 +2,12 @@ import random from 'lodash/random';
 import Konva from 'konva';
 import { TaskView } from './TaskView';
 import { inCase } from "../constants/inCase";
+import { numbers } from "../constants/numbers";
+import {Utils} from "../utils/Utils";
 
 export class GameView {
   constructor() {
+    this.utils = new Utils();
     this.canvasBackground = document.querySelector('#canvasContainer');
     this.arrBackgroung = ["bg_2.jpg", "bg_3.jpg", "bg_4.jpg"];
     this.header = document.querySelector('#header');
@@ -91,7 +94,7 @@ export class GameView {
     this.switchClasses(this.monsterStatusBarContainer);
   };
 
-  showHideSpellsList(player){
+  async showHideSpellsList(player){
     if(this.spellsListContainer.classList.contains("hide")){
       this.spellsListContainer.classList.remove("hide");
       this.spellsListContainer.classList.add("show");
@@ -99,7 +102,8 @@ export class GameView {
     }else{
       this.spellsListContainer.classList.remove("show");
       this.spellsListContainer.classList.add("hide");
-      setTimeout(()=>{modalSpell.classList.add("hide");},500);
+      await this.utils.pause(numbers.closeModalSpellPause);
+      modalSpell.classList.add("hide");
     }
   };
 

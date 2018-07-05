@@ -17,7 +17,7 @@ export class Utils{
             return Promise
             .all(imageSources.map(i => this.loadImage(i)));
         };
-    };    
+    };
 
     // ТОP_5 of records - player name and max count of the defeated monster for game, stored in localStorage
     updateLocalStorageData(nameStr, countInt){
@@ -62,4 +62,9 @@ export class Utils{
         }
         else return "There are no records in localStorage."
     };
+    async pause (time){
+      return new Promise((resolve)=>{
+        setTimeout(resolve, time);
+      });
+    }
 }

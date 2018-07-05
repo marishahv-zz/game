@@ -4,6 +4,7 @@ import { numbers } from "../constants/numbers";
 import { inCase } from "../constants/inCase";
 import { animationsNames } from "../constants/animationsNames";
 import { keyBoardEvents } from "../constants/keys";
+import {Utils} from "../utils/Utils";
 
 export class PlayerController {
 
@@ -19,6 +20,7 @@ export class PlayerController {
     this.palayerGetDmg = false;
     this.playerCanWalk = false;
     this.playerCast = false;
+    this.utils = new Utils();
   }
 
   createPlayer(){
@@ -85,10 +87,9 @@ export class PlayerController {
     this.playerCanWalk = false;
   }
 
-  playerDoCast(){
+  async playerDoCast(){
     this.playerCast = true;//каст игрока
-    setTimeout(()=>{
-      this.playerCast=false
-    },1000)
+    await this.utils.pause(numbers.playerCastSpellPause);
+    this.playerCast=false;
   }
 }

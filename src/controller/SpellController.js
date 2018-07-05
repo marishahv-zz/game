@@ -3,6 +3,7 @@ import { animationsSpells } from "../constants/canvas";
 import { numbers } from "../constants/numbers";
 import { inCase } from "../constants/inCase";
 import { animationsNames } from "../constants/animationsNames";
+import {Utils} from "../utils/Utils";
 
 export class SpellController {
     constructor(view) {
@@ -13,6 +14,7 @@ export class SpellController {
     this.spellImgMonster = null;
     this.spellMonster = null;
     this.layerMonster = new Konva.Layer();
+    this.utils = new Utils();
   }
 
   takeSpriteForSpell(SpellId){
@@ -37,7 +39,7 @@ export class SpellController {
         return null;
     }
   }
-  
+
   createPlayerSpell(spellName){
     this.spellImgPlayer  = new Image();
     this.spellPlayer = new Konva.Sprite({
@@ -65,16 +67,14 @@ export class SpellController {
     this.spellMonster.attrs.animation = animationsNames.stoneWodge;
   };
 
-  playerCastSpell(obj){
-    obj.playerCast = true;
-    setTimeout(()=>{obj.playerCast=false},1000)
-    setTimeout(()=>{
-      this.layerPlayer.add(this.spellPlayer);
-      this.spellView.displayLayer(this.layerPlayer);
-      this.spellView.initObject(this.spellPlayer);
-      this.spellView.initSpellAnimationPlayer(this.spellPlayerMovements.bind(this),this.layerPlayer);
-      this.spellView.startAnimationPlayer();
-    },500)
+  async playerCastSpell(obj){
+    obj.playerDoCast();
+    await this.utils.pause(numbers.showSpellPause);
+    this.layerPlayer.add(this.spellPlayer);
+    this.spellView.displayLayer(this.layerPlayer);
+    this.spellView.initObject(this.spellPlayer);
+    this.spellView.initSpellAnimationPlayer(this.spellPlayerMovements.bind(this),this.layerPlayer);
+    this.spellView.startAnimationPlayer();
   }
 
   monsterCastSpell(){
