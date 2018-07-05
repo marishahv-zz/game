@@ -143,8 +143,10 @@ export class GameController {
     }
   }
 
-  RenderingLevel(){
+  async RenderingLevel(){
     if(this.playerController.character.attrs.x > numbers.endOfGameFiled){
+      this.audio.stopAudio(this.audio.mainMusic);
+      this.audio.playAudio(this.audio.battleMusic);
       this.playerController.backPlayerStopMove()
       this.monster = new Monster();
       this.monsterView = new MonsterView(this.stage);
@@ -154,47 +156,40 @@ export class GameController {
       this.gameView.showHideMonsterStatusBar();
       this.monsterController.createMonster();
       this.monsterController.monsterMove();
-      setTimeout(()=>{
-        this.gameView.showHideSpellsList(this.player)
-      },200);
-      this.audio.stopAudio(this.audio.mainMusic);
-      this.audio.playAudio(this.audio.battleMusic);
+      await this.utils.pause(numbers.renderLevelSpellsListPause);
+      this.gameView.showHideSpellsList(this.player);
     }
   }
 
-  takeTaskForSpell(spellId){
+  async takeTaskForSpell(spellId){
     switch (spellId) {
       case inCase.fireBall:
-        setTimeout(()=>{
-          this.task = new MathTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initMathTask();
-        },1000);
+        await this.utils.pause(numbers.showTaskPause);
+        this.task = new MathTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initMathTask();
         break;
       case inCase.iceWodge:
-        setTimeout(()=>{
-          this.task = new EnglishTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initEnglishTask();
-        },1000);
+        await this.utils.pause(numbers.showTaskPause);
+        this.task = new EnglishTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initEnglishTask();
         break;
       case inCase.cuttingWind:
-        setTimeout(()=>{
-          this.task = new DraggableTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initDraggableTask();
-        },1000);
+        await this.utils.pause(numbers.showTaskPause);
+        this.task = new DraggableTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initDraggableTask();
         break;
       case inCase.stoneWodge:
-        setTimeout(()=>{
-          this.task = new AudioTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initAudioTask();
-        },1000);
+        await this.utils.pause(numbers.showTaskPause);
+        this.task = new AudioTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initAudioTask();
         break;
       default:
         return null;
@@ -212,43 +207,41 @@ export class GameController {
       }
   };
 
-  playerAttack(){
+  async playerAttack(){
     this.audio.playAudio(this.audio.taskAccept);
     this.monster.getDamaged(numbers.heroDmg);
-    setTimeout(()=>{
-      this.audio.playAudio(this.audio.playerCasts);
-      this.spellController.playerCastSpell(this.playerController);
-      this.ansverSend = false;
-      this.gameView.renderHpMonster(this.monster);
-    },2000);
+    this.audio.playAudio(this.audio.playerCasts);
+    await this.utils.pause(numbers.closeModalTaskPause);
+    this.spellController.playerCastSpell(this.playerController);
+    await this.utils.pause(numbers.ansverSendPause);
+    this.ansverSend = false;
+    this.gameView.renderHpMonster(this.monster);
   }
 
-  monsterAttack(){
+  async monsterAttack(){
     this.audio.playAudio(this.audio.taskDecline);
     this.player.getDamaged(numbers.monsterDmg);
-    setTimeout(()=>{
-      this.audio.playAudio(this.audio.playerCasts);
-      this.spellController.monsterCastSpell();
-      this.ansverSend = false;
-      this.gameView.renderHpHero(this.player);
-    },2000);
-    setTimeout(()=>{
-      this.playerController.palayerGetDmg = true;
-    },3200)
-    setTimeout(()=>{
-      this.playerController.palayerGetDmg = false;
-    },4000);
+    this.audio.playAudio(this.audio.playerCasts);
+    await this.utils.pause(numbers.closeModalTaskPause);
+    this.spellController.monsterCastSpell();
+    await this.utils.pause(numbers.playerDmgedStart);
+    this.playerController.palayerGetDmg = true;
+    this.gameView.renderHpHero(this.player);
+    await this.utils.pause(numbers.playerDmgedStop);
+    this.playerController.palayerGetDmg = false;
+    this.ansverSend = false;
+
   }
 
   async checkTaskAnsver(ev){
     ev.preventDefault();
-    if(ev.target.getAttribute("draggable")){
-      await this.taskController.checkDraggableResult(ev);
-    }else{
-      await this.taskController.checkInputResult(ev);
-    }
     if(!this.ansverSend){
       this.ansverSend = true;
+      if(ev.target.getAttribute("draggable")){
+        await this.taskController.checkDraggableResult(ev);
+      }else{
+        await this.taskController.checkInputResult(ev);
+      }
       if(this.taskController.isCorrect){
         this.playerAttack()
       }else{
@@ -271,25 +264,22 @@ export class GameController {
     this.timer.stop();
   }
 
-  hpCharactersTrigger(){
+  async hpCharactersTrigger(){
     if(this.player.hp === numbers.zero){
-      setTimeout(()=>{
-        this.stopGame();
-      },4000);
+      await this.utils.pause(numbers.playerDiePause);
+      this.stopGame();
     }else if(this.monster.hp === numbers.zero){
-      setTimeout(()=>{
-        this.playerController.playerCanWalk = true;
-        this.audio.stopAudio(this.audio.battleMusic);
-        this.audio.playAudio(this.audio.mainMusic);
-        this.gameView.showHideMonsterStatusBar();
-        this.monsterController.destroyMonster();
-        this.player.addToScore(numbers.monsterPoints);
-        this.gameView.renderHeroScore(this.player);
-      },4000);
+      await this.utils.pause(numbers.monsterDiePause);
+      this.playerController.playerCanWalk = true;
+      this.audio.stopAudio(this.audio.battleMusic);
+      this.audio.playAudio(this.audio.mainMusic);
+      this.gameView.showHideMonsterStatusBar();
+      this.monsterController.destroyMonster();
+      this.player.addToScore(numbers.monsterPoints);
+      this.gameView.renderHeroScore(this.player);
     }else{
-      setTimeout(()=>{
-        this.gameView.showHideSpellsList(this.player);
-      },4000);
+      await this.utils.pause(numbers.battleSpellListPause);
+      this.gameView.showHideSpellsList(this.player);
     }
   }
 

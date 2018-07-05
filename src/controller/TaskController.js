@@ -6,12 +6,14 @@ import 'webpack-jquery-ui/sortable';
 import { keyBoardEvents } from "../constants/keys";
 import { messages } from "../constants/messages";
 import { numbers } from "../constants/numbers";
+import {Utils} from "../utils/Utils";
 
 export class TaskController {
     constructor(model, view) {
         this.view = view;
         this.model = model;
-        this.backMusic = new Audio();        
+        this.backMusic = new Audio();
+        this.utils = new Utils();
         this.result = "";
         this.isCorrect = null;
         this.checkDraggableResult = async (evt) => {
@@ -25,9 +27,8 @@ export class TaskController {
                 this.view.displayHeading(messages.lost);
                 this.isCorrect = false;
             }
-            setTimeout(() => {
-                this.closeModal();
-            }, 1500);
+            await this.utils.pause(numbers.closeModalTaskPause);
+            this.closeModal();
         };
 
         this.checkInputResult = async (evt) => {
@@ -51,14 +52,14 @@ export class TaskController {
                 this.view.displayHeading(messages.lost);
                 this.isCorrect = false;
             }
-            setTimeout(() => {
-                this.closeModal();
-            }, 1500);
+            await this.utils.pause(numbers.closeModalTaskPause);
+            this.closeModal();
+
         };
         this.init();
     };
 
-    init() {        
+    init() {
         this.view.inputResult.addEventListener("keypress", this.preventDefaultEvent, false);
     };
 
@@ -93,10 +94,10 @@ export class TaskController {
     initDraggableTask() {
         this.view.toggleModal();
         this.view.hideElement(this.view.taskDiv);
-        
+
         $("#wordblock").sortable();
         $("#wordblock").disableSelection();
-        
+
         this.view.spellButton.setAttribute("draggable", "true");
         let word = this.model.draggbleLetters.correct;
         let letters = this.model.shuffleItems(word);
@@ -116,8 +117,8 @@ export class TaskController {
     initAudioTask(){
         this.backMusic.battleMusic.volume = numbers.battleMusicMinvolume;
         this.view.toggleModal();
-        this.view.displayAudio();        
-        this.result = this.model.word;        
+        this.view.displayAudio();
+        this.result = this.model.word;
 
         this.view.listenBtn.onclick = (event) => {
             event.preventDefault();

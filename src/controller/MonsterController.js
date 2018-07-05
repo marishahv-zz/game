@@ -10,10 +10,10 @@ export class MonsterController {
         this.monsterView = view;
         this.animationMove = null;
         this.utils = new Utils();
-        this.layer = new Konva.Layer({           
+        this.layer = new Konva.Layer({
             listening: true
         });
-        this.group = new Konva.Group({          
+        this.group = new Konva.Group({
             x: APPEARANCE.COORDINATES.monster.x,
             y: APPEARANCE.COORDINATES.monster.y,
             id: "monsterId"
@@ -30,23 +30,23 @@ export class MonsterController {
 
                 let konvaImage = new Konva.Image({
                     image: bodyPart,
-                    width: this.getBodyPartWidth(index),                    
-                    height: this.getBodyPartHeight(index),                     
-                    x: this.getBodyPartPositionX(index),                    
-                    y: this.getBodyPartPositionY(index)                    
+                    width: this.getBodyPartWidth(index),
+                    height: this.getBodyPartHeight(index),
+                    x: this.getBodyPartPositionX(index),
+                    y: this.getBodyPartPositionY(index)
                 });
-                
+
                 this.group.add(konvaImage);
                 this.layer.add(this.group);
-                this.monsterView.displayLayer(this.layer);           
+                this.monsterView.displayLayer(this.layer);
             });
         });
-    };   
+    };
 
     getBodyPartWidth(index){
         switch (index) {
             case 0:
-                return APPEARANCE.HEROES.monster.width.head;    
+                return APPEARANCE.HEROES.monster.width.head;
                 break;
             case 1:
                 return APPEARANCE.HEROES.monster.width.body;
@@ -95,17 +95,17 @@ export class MonsterController {
                 break;
             case 2:
                 return APPEARANCE.HEROES.monster.bodyPartPositionY.feet;
-                break;                            
+                break;
         }
     };
-    
-    monsterMove (){     
+
+    monsterMove (){
         this.animationMove =  this.monsterView.initAnimationMove(this.layer);
-        this.monsterView.startAnimation(this.animationMove);        
+        this.monsterView.startAnimation(this.animationMove);
     };
 
     destroyMonster() {
-        this.monsterView.stopAnimation(this.animationMove); 
+        this.monsterView.stopAnimation(this.animationMove);
         this.monsterView.removeLayer(this.layer);
     };
 }
