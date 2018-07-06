@@ -125,52 +125,51 @@ export const ENGLISH = {
 
 export const DRAGGABLE_LETTER = {
 	"words" : [
-		{			
+		{
 			"correct" : "hello"
 		},
-		{			
+		{
 			"correct" : "dog"
 		},
-		{			
+		{
 			"correct" : "cat"
 		},
-		{			
+		{
 			"correct" : "mum"
 		},
-		{			
+		{
 			"correct" : "duck"
 		},
-		{			
+		{
 			"correct" : "sun"
 		},
-		{			
+		{
 			"correct" : "smile"
 		},
-		{			
+		{
 			"correct" : "fog"
 		},
-		{			
+		{
 			"correct" : "eye"
 		},
-		{			
+		{
 			"correct" : "love"
 		}
 	]
 };
-
 export const MATH = {
 	operations: ["+", "-", "/", "*"],
-	sum: {		
+	sum: {
 		upperBound: 500
 	},
 	subtraction: {
 		upperBound: 500
-	}, 
+	},
 	division: {
 		lowerDividend: 10,
 		upperDividend: 1000,
 		lowerDivisor: 1,
-		upperDivisor: 10 
+		upperDivisor: 10
 	},
 	multiplication: {
 		lowerBound: 10,

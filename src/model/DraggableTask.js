@@ -1,12 +1,10 @@
-
 import * as TASKS from "../constants/tasks";
 import random from 'lodash/random';
 
-
 export class DraggableTask {
-    constructor(){         
+    constructor(){
         this.draggbleLetters = TASKS.DRAGGABLE_LETTER.words[random(0, TASKS.DRAGGABLE_LETTER.words.length - 1)]
-    };  
+    };
 
     shuffleItems (string){
         let lettersArr = string.split('');

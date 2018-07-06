@@ -1,0 +1,24 @@
+<div class="modal">
+  <div class="modal-content">
+    <h1 id="modal-h1">Please, solve the task:</h1>
+    <form>
+      <div id="task-content-id" class="task-content">
+        <div class="task-wrapper">
+          <div class="math-content unactive">
+            <span id="operand1" class="operand"></span><span id="operator_id" class="operator"></span><span id="operand2" class="operand"></span><span>=</span>
+          </div>
+          <div class="english-content unactive">
+            <span id="word1" class="operand"></span>
+          </div>
+          <button class="audio-btn unactive" type="button">Listen</button>
+          <div class="tooltip">
+            <input type="text" name="result" autocomplete="off">
+            <span class="tooltiptext">Your answer is incorrect. Change your answer and try again.</span>
+          </div>
+        </div>
+        <div id="wordblock" class="unactive"></div>
+      </div>
+      <button class="check-result" type="button"><img src="${require(`./images/cast_spell.png`)}"></button>
+    </form>
+  </div>
+</div>

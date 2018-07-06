@@ -14,6 +14,30 @@ export  const numbers ={
   "playerSpellInitialCoordinateY" : window.innerHeight - 300 ,
   "monsterSpellInitialCoordinateX" : window.innerWidth-(window.innerWidth / 3) ,
   "monsterSpellInitialCoordinateY" : window.innerHeight - 300 ,
+  "monsterInitialCoordinateX" : window.innerWidth - (window.innerWidth / 5) ,
+  "monsterInitialCoordinateY" : window.innerHeight - 420 ,
+  "monsterMoveX" : -3,
+  "monsterStopX" : 7,
+   "monsterWidth": {
+            "head": 210,
+            "body": 215,
+            "feet": 220
+           },
+   "monsterHeight": {
+            "head": 190,
+            "body": 215,
+            "feet": 220
+           },
+   "monsterBodyPartPositionX": {
+            "head": 39,
+            "body": 5,
+            "feet": 2
+           },
+   "monsterBodyPartPositionY": {
+            "head": 0,
+            "body": 72,
+            "feet": 158
+           },
   "monsterSpellFly" : 20 ,
   "playerSpellFly" : 20 ,
   "playerCastBorder" :  window.innerWidth - 100,

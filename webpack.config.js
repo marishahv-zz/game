@@ -1,11 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
   entry: ['./src/index.js'],
   output: {
-    path: path.resolve(__dirname, 'script'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js'
   },
   module: {
@@ -26,16 +28,45 @@ module.exports = {
         }
       },
       {
-        test: /\.(jpe?g|png|gif)$/i,
-        loader:"file-loader",
-        query:{
-          name:'[name].[ext]',
-          outputPath:'images/'
-        }
+       test: /\.(mp3|wav)$/,
+       use: [
+         {
+           loader: 'file-loader',
+           options: {
+              name: 'audio/[name].[ext]'
+           }
+         }
+       ]
+      },
+      {
+       test: /\.(png|jpg|gif|svg)$/,
+       use: [
+         {
+           loader: 'file-loader',
+           options: {
+              name: 'images/[name].[ext]'
+           }
+         }
+       ]
       },
       {
         test: /\.css$/,
-        loaders: ["style-loader","css-loader"]
+        use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: "css-loader",
+              options: { url: false }
+            }
+          ]
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            interpolate: true
+          }
+        }
       }
     ]
   },
@@ -45,6 +76,12 @@ module.exports = {
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       'window.$': 'jquery'
+    }),
+    new MiniCssExtractPlugin({
+      filename: "style/index.css"
+    }),
+    new HtmlWebpackPlugin({
+      template: '!!html-loader?interpolate!src/index.html'
     })
   ]
 };

@@ -1,0 +1,37 @@
+<section class="menue-container active" id="MenueContainer">
+  <article class="preview-menue active" id="previewMenue">
+    <p>Hello friend! <br> Are you ready to battle with monsters?</p>
+    <input type="button" class="preview-menue-btn" value="Yes" id="goToMainMenue">
+  </article>
+  <article class="main-menue unactive">
+    <h2 class="main-menue-header">Create your hero</h2>
+    <div class="main-menue-main">
+      <ul class="main-menue-sidebar-1">
+        <li>Genus</li>
+        <li>
+          <input type="radio" name="heroRace" value="elf" id="radioElfRace" checked>
+          <label  class="lable" for="radioElfRace">Elf</label>
+        </li>
+      </ul>
+      <div class="main-menue-content">
+        <img  alt="" class="img-hero" id="heroImg">
+        <input type="text" value="" id="nameOfHero" maxlength = "8" placeholder="5 - 8 characters">
+        <label for="nameOfHero">What is the name of your hero?</label>
+      </div>
+      <ul class="main-menue-sidebar-2">
+        <li>Gender</li>
+        <li>
+          <input type="radio" name="heroGender" value="male" id="radioGenderMale" >
+          <label  class="lable" for="radioGenderMale">Men</label>
+        </li>
+        <li>
+          <input type="radio" name="heroGender" value="female" id="radioGenderFemale" checked>
+          <label  class="lable" for="radioGenderFemale">Woman</label>
+        </li>
+      </ul>
+    </div>
+    <div class="main-menue-footer">
+      <input type="button" value="Start game" id="starGame">
+    </div>
+  </article>
+</section>

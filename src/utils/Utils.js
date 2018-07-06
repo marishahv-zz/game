@@ -1,4 +1,3 @@
-
 import floor from 'lodash/floor';
 
 export class Utils{

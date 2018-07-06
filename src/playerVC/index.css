@@ -1,0 +1,36 @@
+
+.heroStatusBar-container{
+  width: 400px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+}
+.heroStatusBar-container img{
+  width : 100px;
+}
+.heroStatusBar-container ul {
+  position: relative;
+}
+.character-hp{
+  height: 20px;
+  width: 200px;
+  background: red;
+  transition: 1s width;
+  position: relative;
+}
+.hp-line-hero{
+  border: 2px solid black;
+  height: 20px;
+  text-align: center;
+  width: 200px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+}
+.character-score{
+  position: absolute;
+  bottom: 0;
+}

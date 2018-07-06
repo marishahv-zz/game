@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Dangerous trip</title>
+    <link rel="stylesheet" href="style/index.css">
+  </head>
+  <body>
+    <audio src="audio/main.mp3"  id="mainMusic"></audio>
+    <audio src="audio/battle.mp3" id="battleMusic"></audio>
+    <audio src="audio/accept.mp3" id="taskAccept"></audio>
+    <audio src="audio/decline.wav" id="taskDecline"></audio>
+    <audio src="audio/walk.mp3" id="playerWalks"></audio>
+    <audio src="audio/checkSpell.wav" id="playerChecksSpell"></audio>
+    <audio src="audio/cast.mp3" id="playerCasts"></audio>
+    <header class="active" id="header">
+      <h1>Dangerous trip</h1>
+    </header>
+    <main class="active">
+      ${require('./gameVC/index.html')}
+      <section class="game-field-container unactive" id="gameFieldContainer">
+        <div id="canvasContainer" class="canvas-container"></div>
+        ${require('./playerVC/index.html')}
+        ${require('./monsterVC/index.html')}
+        ${require('./spellVC/index.html')}
+        ${require('./taskVC/index.html')}
+      </section>
+      <div class="modal-game-over-container unactive" id="modalGameOverContainer">
+        <img src="${require(`./gameVC/images/game-over.png`)}" alt="" id="gameOverImg">
+      </div>
+    </main>
+  </body>
+</html>

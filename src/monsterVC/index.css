@@ -1,0 +1,39 @@
+
+.monsterStatusBar-container{
+  width: 400px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.monsterStatusBar-container ul{
+  position: relative;
+}
+.monster-icon{
+  width: 100px;
+  height: 100px;
+}
+.monster-name{
+  display: flex;
+  justify-content: flex-end;
+}
+.hp-line-monster{
+  border: 2px solid black;
+  height: 20px;
+  text-align: center;
+  width: 200px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0;
+}
+.monster-hp{
+  height: 20px;
+  width: 200px;
+  background: red;
+  transition: 1s width;
+  right: 0;
+  position: absolute;
+}
