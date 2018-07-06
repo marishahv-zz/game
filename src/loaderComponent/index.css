@@ -1,0 +1,38 @@
+.loader-container{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  background: rgba(1,1,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loader{
+  width: 13%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.loader p {
+  margin: 20px 0px 20px 0px;
+  transition: opacity 1s;
+}
+.loader-img{
+  width: 100%;
+}
+.active-container{
+  display: flex;
+}
+.unactive-container{
+  display: none;
+}
+.active-txt{
+  opacity:1;
+}
+.unactive-txt{
+  opacity:0;
+}

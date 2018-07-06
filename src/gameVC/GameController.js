@@ -21,6 +21,8 @@ import { tagsNames } from "../constants/tagsNames";
 import { messages } from "../constants/messages";
 import { numbers } from "../constants/numbers";
 import { inCase } from "../constants/inCase";
+import { showLoader,hideLoader } from "../loaderComponent/index";
+import { classSwitcherModal,fillOutTxtContainer } from "../madalComponent/index";
 
 export class GameController {
 
@@ -145,8 +147,6 @@ export class GameController {
 
   async  RenderingLevel(){
     if(this.playerController.character.attrs.x > numbers.endOfGameFiled){
-      this.audio.stopAudio(this.audio.mainMusic);
-      this.audio.playAudio(this.audio.battleMusic);
       this.playerController.backPlayerStopMove()
       this.monster = new Monster();
       this.monsterView = new MonsterView(this.stage);
@@ -155,6 +155,10 @@ export class GameController {
       this.gameView.createMonsterStatusBar(this.monster);
       this.gameView.showHideMonsterStatusBar();
       this.monsterController.createMonster();
+      showLoader();
+      await hideLoader();
+      this.audio.stopAudio(this.audio.mainMusic);
+      this.audio.playAudio(this.audio.battleMusic);
       this.monsterController.monsterMove();
       await this.utils.pause(numbers.renderLevelSpellsListPause);
       this.gameView.showHideSpellsList(this.player);
@@ -319,6 +323,8 @@ export class GameController {
   startGame(ev){
     switch (ev.target.id) {
       case inCase.buttonYes:
+        classSwitcherModal();
+        fillOutTxtContainer();
         this.gameView.switchClasses(this.gameView.menueContainer.children[0]);
         this.gameView.switchClasses(this.gameView.menueContainer.children[1]);
         this.gameView.createHeroImg(this.gameView.heroImg);

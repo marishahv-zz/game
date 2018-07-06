@@ -695,5 +695,76 @@ button.check-result img {
   color: white;
 }
 
+.loader-container{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  background: rgba(1,1,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loader{
+  width: 13%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.loader p {
+  margin: 20px 0px 20px 0px;
+  transition: opacity 1s;
+}
+.loader-img{
+  width: 100%;
+}
+.active-container{
+  display: flex;
+}
+.unactive-container{
+  display: none;
+}
+.active-txt{
+  opacity:1;
+}
+.unactive-txt{
+  opacity:0;
+}
+
+.modal-txt-container{
+  position: absolute;
+  top:0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(1,1,1,0.9);
+}
+.txt-container{
+  width: 40%;
+  min-height: 40%;
+  max-height: 100%;
+  overflow: hidden;
+  background-color: white;
+  color:black;
+  padding: 0px 20px 0px 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.unactive-modal-txt{
+  display: none;
+}
+.active-modal-txt{
+  display: flex;
+}
+
 
 

@@ -2,6 +2,7 @@ import Konva from 'konva';
 import random from 'lodash/random';
 import { GameController } from "./gameVC/GameController";
 import { GameView } from "./gameVC/GameView";
+import { classSwitcherModal,fillOutTxtContainer } from "./madalComponent/index";
 const css = require("./index.css");
 function importAll(r) {
   let audio = {};
@@ -22,3 +23,6 @@ const gameController = new GameController(gameView,stage);
 
 gameController.initMenueListener();
 gameController.initNameOfHeroListner();
+
+classSwitcherModal();
+fillOutTxtContainer();
