@@ -236,7 +236,7 @@ export class GameController {
         spallSpan = ev.target;
       }
       if(ev.keyCode == KEYBOARD_EVENT.enter || ev.keyCode == KEYBOARD_EVENT.space){        
-        spallSpan = document.activeElement;
+        spallSpan = this.gameView.spellsListContainer.querySelector(".selected");;
       }
       if(spallSpan){
         this.spellView = new SpellView(this.stage);
