@@ -1,4 +1,4 @@
-export const  elfFemale = {
+export const  ELF_FEMALE = {
   stay: [
     0, 0, 256, 227,
     256, 0, 256, 227,
@@ -28,7 +28,7 @@ export const  elfFemale = {
     1936, 0, 484, 256
   ]
 };
-export const  elfMale = {
+export const  ELF_MALE = {
   stay: [
     0, 0, 238, 221,
     238, 0, 238, 221,
@@ -59,7 +59,7 @@ export const  elfMale = {
     1936, 0, 484, 236
   ]
 };
-export const animationsSpells = {
+export const ANIMATION_SPELLS = {
   fireBallSpell: [
     0, 0, 80, 80,
     80, 0, 80, 80,

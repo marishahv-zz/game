@@ -1,8 +1,8 @@
 import Konva from 'konva';
-import { animationsSpells } from "../constants/canvas";
-import { numbers } from "../constants/numbers";
-import { inCase } from "../constants/inCase";
-import { animationsNames } from "../constants/animationsNames";
+import { ANIMATION_SPELLS } from "../constants/canvas";
+import * as APPEARANCE from "../constants/appearance";
+import { ID } from "../constants/id";
+import { ANIMATION_NAMES } from "../constants/animationsNames";
 
 export class SpellController {
     constructor(view) {
@@ -17,21 +17,21 @@ export class SpellController {
 
   takeSpriteForSpell(SpellId){
     switch (SpellId) {
-      case inCase.fireBall:
+      case ID.fireBall:
         this.spellImgPlayer.src = 'images/spells/fireBall.png';
-        this.spellPlayer.attrs.animation = animationsNames.fireBall;
+        this.spellPlayer.attrs.animation = ANIMATION_NAMES.fireBall;
         break;
-      case inCase.iceWodge:
+      case ID.iceWodge:
         this.spellImgPlayer.src = 'images/spells/iceBall.png';
-        this.spellPlayer.attrs.animation = animationsNames.iceWodge;
+        this.spellPlayer.attrs.animation = ANIMATION_NAMES.iceWodge;
         break;
-      case inCase.cuttingWind:
+      case ID.cuttingWind:
         this.spellImgPlayer.src = 'images/spells/tornado.png';
-        this.spellPlayer.attrs.animation = animationsNames.cuttingWind;
+        this.spellPlayer.attrs.animation = ANIMATION_NAMES.cuttingWind;
         break;
-      case inCase.stoneWodge:
+      case ID.stoneWodge:
         this.spellImgPlayer.src = 'images/spells/boulder.png';
-        this.spellPlayer.attrs.animation = animationsNames.stoneWodge;
+        this.spellPlayer.attrs.animation = ANIMATION_NAMES.stoneWodge;
         break;
       default:
         return null;
@@ -41,10 +41,10 @@ export class SpellController {
   createPlayerSpell(spellName){
     this.spellImgPlayer  = new Image();
     this.spellPlayer = new Konva.Sprite({
-      x: numbers.playerSpellInitialCoordinateX,
-      y: numbers.playerSpellInitialCoordinateY,
-      image: this.spellImgPlayer ,
-      animations: animationsSpells,
+      x: APPEARANCE.COORDINATES.player.spellX,
+      y: APPEARANCE.COORDINATES.player.spellY,
+      image: this.spellImgPlayer,
+      animations: ANIMATION_SPELLS,
       frameRate: 8,
       frameIndex: 0
     });
@@ -54,15 +54,15 @@ export class SpellController {
   createMonsterSpell(){
     this.spellImgMonster  = new Image();
     this.spellMonster = new Konva.Sprite({
-      x: numbers.monsterSpellInitialCoordinateX,
-      y: numbers.monsterSpellInitialCoordinateY,
+      x: APPEARANCE.COORDINATES.monster.spellX,
+      y: APPEARANCE.COORDINATES.monster.spellY,
       image: this.spellImgMonster ,
-      animations: animationsSpells,
+      animations: ANIMATION_SPELLS,
       frameRate: 8,
       frameIndex: 0
     });
     this.spellImgMonster.src = 'images/spells/boulder.png';
-    this.spellMonster.attrs.animation = animationsNames.stoneWodge;
+    this.spellMonster.attrs.animation = ANIMATION_NAMES.stoneWodge;
   };
 
   playerCastSpell(obj){
@@ -86,8 +86,8 @@ export class SpellController {
   }
 
   spellMonsterMovements(){
-    if(this.spellMonster.attrs.x > numbers.playerInitialCoordinateX){
-       this.spellMonster.setX(this.spellMonster.attrs.x - numbers.monsterSpellFly);
+    if(this.spellMonster.attrs.x > APPEARANCE.COORDINATES.player.x){
+       this.spellMonster.setX(this.spellMonster.attrs.x - APPEARANCE.COORDINATES.monster.spellFly);
     }
     else{
       this.spellMonster.destroy();
@@ -96,8 +96,8 @@ export class SpellController {
   }
 
   spellPlayerMovements(){
-    if(this.spellPlayer.attrs.x < numbers.playerCastBorder){
-       this.spellPlayer.setX(this.spellPlayer.attrs.x + numbers.playerSpellFly);
+    if(this.spellPlayer.attrs.x < APPEARANCE.COORDINATES.player.castBorder){
+       this.spellPlayer.setX(this.spellPlayer.attrs.x + APPEARANCE.COORDINATES.player.spellFly);
     }
     else{
       this.spellPlayer.destroy();

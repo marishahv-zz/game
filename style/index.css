@@ -276,9 +276,14 @@ input[type=radio] {
   transition: font-size 0.3s;
   cursor: pointer;
 }
-.spells-list-item span:hover{
+/* .spells-list-item span:hover{
   font-size: 50px;
+} */
+
+.selected {
+  font-size: 50px !important;
 }
+
 .canvas-container{
   width: 100vw;
   max-width: 1920px;
@@ -299,6 +304,9 @@ input[type=radio] {
   align-items: center;
   background: rgb(255, 255, 255);
   z-index: 2;
+  background: url("../images/backgrounds/start_bg.jpg"); 
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 .start-animation{
   animation: gameOver 4s infinite alternate;

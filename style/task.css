@@ -56,7 +56,7 @@
   }
  
   .modal-content h1 {
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 700;
     font-style: oblique;
     color: #006D9C;
@@ -66,12 +66,7 @@
   }
 
   .task-content {
-    width: 50%;
-    /*display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-	  align-items: center;   
-    margin-bottom: 20px; */
+    width: 50%;   
   }
 
 .tooltip {
@@ -219,7 +214,7 @@ button.check-result img {
   outline: none;
 }
 
-.audio-btn:hover {
+.audio-btn:hover, .audio-btn:focus {
   background-color: #006D9C;
   color: white;
 }

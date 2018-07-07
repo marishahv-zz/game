@@ -2,7 +2,7 @@
 import {TaskController} from "../controller/TaskController";
 import $ from "jquery";
 import 'webpack-jquery-ui/sortable';
-import { messages } from "../constants/messages";
+import { MESSAGES } from "../constants/messages";
 
 export class TaskView {
     constructor() {
@@ -45,7 +45,7 @@ export class TaskView {
     displayMath(mathExpressionObj){
         this.displayElement(this.taskDiv);
         this.displayElement(this.mathDiv);
-        this.displayHeading(messages.mathTaskTxt);
+        this.displayHeading(MESSAGES.mathTaskTxt);
         this.spanOperand_1.innerText = mathExpressionObj.operand_1;
         this.spanOperand_2.innerText = mathExpressionObj.operand_2;
         this.spanOperator.innerText = mathExpressionObj.operator;
@@ -70,7 +70,7 @@ export class TaskView {
     displayEnglish(word){
         this.displayElement(this.taskDiv);
         this.displayElement(this.englishDiv);
-        this.displayHeading(messages.englishTaskTxt);
+        this.displayHeading(MESSAGES.englishTaskTxt);
         this.inputResult.style.width = "100%";
         let span = document.getElementById("word1");
         span.innerText = word;
@@ -87,7 +87,7 @@ export class TaskView {
 
     displayDraggable(letters){
         this.displayElement(this.draggableDiv);
-        this.displayHeading(messages.DraggableTaskTxt);
+        this.displayHeading(MESSAGES.DraggableTaskTxt);
         const divs = [];
         for (let i = 0; i < letters.length; i++) {
           divs.push('<div>' + letters[i] + '</div>');
@@ -97,7 +97,7 @@ export class TaskView {
 
     displayAudio(){
         this.displayElement(this.taskDiv);
-        this.displayHeading(messages.AudioTaskTxt);
+        this.displayHeading(MESSAGES.AudioTaskTxt);
         this.inputResult.style.width = "100%";
         this.displayElement(document.querySelector(".audio-btn"));
     };
@@ -110,7 +110,7 @@ export class TaskView {
 
     displayHeading(text){
         let h1 = document.getElementById("modal-h1");
-        h1.innerText = text;
+        h1.innerHTML = text;
     };
 
     changeInputStyle(boolean){

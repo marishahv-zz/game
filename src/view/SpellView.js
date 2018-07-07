@@ -1,4 +1,5 @@
 import Konva from 'konva';
+
 export class SpellView {
   constructor(stage) {
     this.stage = stage;

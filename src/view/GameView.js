@@ -1,7 +1,7 @@
 import random from 'lodash/random';
 import Konva from 'konva';
 import { TaskView } from './TaskView';
-import { inCase } from "../constants/inCase";
+import { ID } from "../constants/id";
 
 export class GameView {
   constructor() {
@@ -14,7 +14,7 @@ export class GameView {
     this.monsterName = document.querySelector('#monsterName');
     this.monsterHp = document.querySelector('#monsterHp');
     this.hpLineMonster = document.querySelector('#hpLineMonster');
-    this.oneHp =2;//px
+    this.oneHp = 2;//px
     this.modalSpell = document.querySelector('#modalSpell');
     this.spellsListContainer = document.querySelector("#spellsListContainer");
     this.heroHp = document.querySelector('#characterHp')
@@ -28,6 +28,7 @@ export class GameView {
     this.characterIcon = document.querySelector('#characterIcon');
     this.gameOver = document.querySelector('#modalGameOverContainer');
     this.spellButton = document.querySelector(".check-result img");
+    this.taskForm = document.querySelector("form");
     this.heroImg = document.querySelector('#heroImg');
     this.levelLoop = null;
   };
@@ -45,22 +46,48 @@ export class GameView {
 
   callGameOver(){
     this.switchClasses(this.gameOver);
-    this.gameOver.classList.add('start-animation');
-  }
+    //this.gameOver.classList.add('start-animation');
+  }; 
 
-  showHideSpellView(elem){
+  showSpellView(elem){
     if(elem.classList.contains("hidden-spell")){
       elem.classList.remove("hidden-spell");
-      elem.classList.add("show-spell");
-    }else{
-      elem.classList.remove("show-spell");
-      elem.classList.add("hidden-spell");
     }
-  }
+    elem.classList.add("show-spell");    
+  };
+
+  hideSpellView(elem){
+    if(elem.classList.contains("show-spell")){      
+      elem.classList.remove("show-spell");
+    }
+    elem.classList.add("hidden-spell");    
+  };
+
+  focusOnElement(element){         
+    element.focus();
+    element.tabIndex = 0;   
+  };
+
+  removeFocusFromElement(element){  
+    element.tabIndex = -1;
+    element.blur();
+  };
+
+  highlightSpell(spellSpan){   
+    spellSpan.classList.add("selected");     
+    this.showSpellView(spellSpan.parentNode.children[1]);
+    this.focusOnElement(spellSpan);  
+  };
+
+  unhighlightSpell(spellSpan){
+    spellSpan.classList.remove("selected");      
+    this.hideSpellView(spellSpan.parentNode.children[1]); 
+    this.removeFocusFromElement(spellSpan);   
+  }; 
 
   returnCheckedRadioGender(){
     const gender = [];
-    const radioButtons = [...this.heroRace,...this.heroGender].forEach((elem) => {
+    const radioButtons = [...this.heroRace, ...this.heroGender].forEach((elem) => {
       if(elem.checked === true){
          gender.push(elem.value);
       }
@@ -91,24 +118,32 @@ export class GameView {
     this.switchClasses(this.monsterStatusBarContainer);
   };
 
-  showHideSpellsList(player){
+  showHideSpellsList(){
     if(this.spellsListContainer.classList.contains("hide")){
       this.spellsListContainer.classList.remove("hide");
       this.spellsListContainer.classList.add("show");
+      this.focusOnElement(this.spellsListContainer);
       this.modalSpell.classList.remove("hide");
     }else{
       this.spellsListContainer.classList.remove("show");
       this.spellsListContainer.classList.add("hide");
-      setTimeout(()=>{modalSpell.classList.add("hide");},500);
+      setTimeout(()=>{
+        this.modalSpell.classList.add("hide");
+        let spanSelected = this.spellsListContainer.querySelector(".selected");
+        if(spanSelected){
+          this.unhighlightSpell(spanSelected);
+        }        
+        this.removeFocusFromElement(this.spellsListContainer);
+      },500);
     }
   };
 
   createHeroImg(element){
     switch (this.returnCheckedRadioGender().join("")){
-      case inCase.heroWoman:
+      case ID.heroWoman:
         element.src="images/heroes-icons/elf-female.png";
         break;
-      case inCase.heroMan:
+      case ID.heroMan:
         element.src="images/heroes-icons/elf-male.png";
         break;
       default:

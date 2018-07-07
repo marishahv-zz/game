@@ -9,11 +9,11 @@ class Monster extends AbstractHero {
             APPEARANCE.HEROES.monster.body[random(0, 2)],
             APPEARANCE.HEROES.monster.feet[random(0, 2)]
         ];
-    }
+    };
 
     getDamaged(value){
         super.getDamaged(value);
-    }
+    };
 }
 
 export {Monster};

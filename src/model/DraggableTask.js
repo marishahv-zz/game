@@ -25,5 +25,5 @@ export class DraggableTask {
           lettersArr[randomIndex] = temporaryValue;
         }
         return lettersArr;
-    };
+    };  
 }

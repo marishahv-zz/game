@@ -1,16 +1,16 @@
 import Konva from 'konva';
-import { elfMale , elfFemale } from "../constants/canvas";
-import { numbers } from "../constants/numbers";
-import { inCase } from "../constants/inCase";
-import { animationsNames } from "../constants/animationsNames";
-import { keyBoardEvents } from "../constants/keys";
+import { ELF_MALE , ELF_FEMALE } from "../constants/canvas";
+import * as APPEARANCE from "../constants/appearance";
+import { ID } from "../constants/id";
+import { ANIMATION_NAMES } from "../constants/animationsNames";
+import { KEYBOARD_EVENT } from "../constants/keys";
 
 export class PlayerController {
 
   constructor(model,view) {
     this.player = model;
     this.playerView = view;
-    this.layer = new Konva.Layer(); ;
+    this.layer = new Konva.Layer();
     this.animationsCharacter = null;
     this.characterImg = null;
     this.character  = null;
@@ -25,10 +25,10 @@ export class PlayerController {
     this.characterImg = new Image();
     this.characterImg.src = `images/heroes-icons/${this.stringSrcPart}-stay.png`;
     this.character = new Konva.Sprite({
-        x: numbers.playerInitialCoordinateX,
-        y: numbers.playerInitialCoordinateY,
+        x: APPEARANCE.COORDINATES.player.x,  
+        y: APPEARANCE.COORDINATES.player.y,
         image: this.characterImg,
-        animation: animationsNames.heroStay,
+        animation: ANIMATION_NAMES.heroStay,
         animations: this.animationsCharacter,
         frameRate: 6,
         frameIndex: 0
@@ -42,13 +42,13 @@ export class PlayerController {
 
   setCoordinatesSprites(){
     switch (`${this.player.race+this.player.gender}`) {
-      case inCase.heroWoman:
-        this.animationsCharacter = elfFemale;
-        this.stringSrcPart = inCase.srcWoman;
+      case ID.heroWoman:
+        this.animationsCharacter = ELF_FEMALE
+        this.stringSrcPart = ID.srcWoman;
         break;
-      case inCase.heroMan:
-        this.animationsCharacter = elfMale;
-        this.stringSrcPart = inCase.srcMan;
+      case ID.heroMan:
+        this.animationsCharacter = ELF_MALE;
+        this.stringSrcPart = ID.srcMan;
         break;
       default:
         return null;
@@ -56,32 +56,32 @@ export class PlayerController {
   }
 
   animationMovements(){
-    if(this.presedKey === keyBoardEvents.left && this.character.attrs.x!==numbers.playerInitialCoordinateX && this.playerCanWalk){
+    if(this.presedKey === KEYBOARD_EVENT.left && this.character.attrs.x !== APPEARANCE.COORDINATES.player.x && this.playerCanWalk){
         this.characterImg.src=`images/heroes-icons/${this.stringSrcPart}-walk.png`;
-        this.character.attrs.animation = animationsNames.heroWalking;
-        this.character.setX(this.character.attrs.x - numbers.playerGoBack);
+        this.character.attrs.animation = ANIMATION_NAMES.heroWalking;
+        this.character.setX(this.character.attrs.x - APPEARANCE.COORDINATES.player.goBack);  
     }
-    if(this.presedKey === keyBoardEvents.right && this.playerCanWalk) {
+    if(this.presedKey === KEYBOARD_EVENT.right && this.playerCanWalk) {
       this.characterImg.src=`images/heroes-icons/${this.stringSrcPart}-walk.png`;
-      this.character.attrs.animation = animationsNames.heroWalking;
-      this.character.setX(this.character.attrs.x + numbers.playerGo);
+      this.character.attrs.animation = ANIMATION_NAMES.heroWalking;
+      this.character.setX(this.character.attrs.x + APPEARANCE.COORDINATES.player.go);
     }
     if(this.presedKey === null && !this.playerCast){
       this.characterImg.src=`images/heroes-icons/${this.stringSrcPart}-stay.png`;
-      this.character.attrs.animation = animationsNames.heroStay;
+      this.character.attrs.animation = ANIMATION_NAMES.heroStay;
     }
     if(this.playerCast){
       this.characterImg.src=`images/heroes-icons/${this.stringSrcPart}-cast.png`;
-      this.character.attrs.animation = animationsNames.heroCast;
+      this.character.attrs.animation = ANIMATION_NAMES.heroCast;
     }
     if(this.palayerGetDmg){
       this.characterImg.src=`images/heroes-icons/${this.stringSrcPart}-get-damaged.png`;
-      this.character.attrs.animation = animationsNames.heroGetDamaged;
+      this.character.attrs.animation = ANIMATION_NAMES.heroGetDamaged;
     }
   }
 
   backPlayerStopMove(){
-    this.character.setX(numbers.playerInitialCoordinateX);
+    this.character.setX(APPEARANCE.COORDINATES.player.x);
     this.playerCanWalk = false;
   }
 

@@ -3,9 +3,10 @@ import { Audio } from "../model/Audio";
 import isArray from 'lodash/isArray';
 import $ from "jquery";
 import 'webpack-jquery-ui/sortable';
-import { keyBoardEvents } from "../constants/keys";
-import { messages } from "../constants/messages";
-import { numbers } from "../constants/numbers";
+import { KEYBOARD_EVENT } from "../constants/keys";
+import { MESSAGES } from "../constants/messages";
+import { GAME_COMMON } from "../constants/common";
+import {Utils} from "../utils/Utils";
 
 export class TaskController {
     constructor(model, view) {
@@ -14,20 +15,20 @@ export class TaskController {
         this.backMusic = new Audio();        
         this.result = "";
         this.isCorrect = null;
+        this.utils = new Utils();
         this.checkDraggableResult = async (evt) => {
             evt.preventDefault();
             let isCorrect = this.isDraggableCorrect();
             if(isCorrect){
-                this.view.displayHeading(messages.win);
+                this.view.displayHeading(MESSAGES.win);
                 this.isCorrect = true;
             }
             if(!isCorrect){
-                this.view.displayHeading(messages.lost);
+                this.view.displayHeading(MESSAGES.lost);
                 this.isCorrect = false;
             }
-            setTimeout(() => {
-                this.closeModal();
-            }, 1500);
+            await this.utils.pause(700);
+            this.closeModal();
         };
 
         this.checkInputResult = async (evt) => {
@@ -44,30 +45,17 @@ export class TaskController {
             this.view.changeInputStyle(isCorrect);
 
             if(isCorrect){
-                this.view.displayHeading(messages.win);
+                this.view.displayHeading(MESSAGES.win);
                 this.isCorrect = true;
             }
             if(!isCorrect){
-                this.view.displayHeading(messages.lost);
+                this.view.displayHeading(MESSAGES.lost);
                 this.isCorrect = false;
             }
-            setTimeout(() => {
-                this.closeModal();
-            }, 1500);
-        };
-        this.init();
-    };
-
-    init() {        
-        this.view.inputResult.addEventListener("keypress", this.preventDefaultEvent, false);
-    };
-
-    preventDefaultEvent(evt){
-        if (evt.keyCode == keyBoardEvents.enter) {
-            evt.preventDefault();
-            return false;
-        }
-    };
+            await this.utils.pause(700);
+            this.closeModal();
+        };        
+    }; 
 
     closeModal(){
         this.view.toggleModal();
@@ -101,8 +89,17 @@ export class TaskController {
         let word = this.model.draggbleLetters.correct;
         let letters = this.model.shuffleItems(word);
         this.result = word;
-
         this.view.displayDraggable(letters);
+
+        $('#wordblock>div').attr('tabindex', 0).bind('keydown', function(event) {            
+           if(event.which == KEYBOARD_EVENT.rightArrow){    
+            $(this).insertAfter($(this).next());
+           }
+           if(event.which == KEYBOARD_EVENT.leftArrow) {
+            $(this).insertBefore($(this).prev());
+          } 
+          $(this).focus();            
+        });         
     };
 
     isDraggableCorrect(){
@@ -114,14 +111,18 @@ export class TaskController {
     };
 
     initAudioTask(){
-        this.backMusic.battleMusic.volume = numbers.battleMusicMinvolume;
+        this.backMusic.battleMusic.volume = GAME_COMMON.battleMusicMinVolume;
         this.view.toggleModal();
         this.view.displayAudio();        
-        this.result = this.model.word;        
-
-        this.view.listenBtn.onclick = (event) => {
-            event.preventDefault();
+        this.result = this.model.word;  
+        
+        const listenToWord = (evt) => {
+            evt.preventDefault();
             this.model.getSynthesisUtterance();
-        }
-    };;
+            evt.stopPropagation();
+        };   
+        
+        this.view.listenBtn.onclick = listenToWord;
+        this.view.listenBtn.onkeypress = listenToWord;        
+    };    
 }

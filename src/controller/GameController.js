@@ -17,11 +17,11 @@ import { DraggableTask } from "../model/DraggableTask";
 import { AudioTask } from "../model/AudioTask";
 import {Utils} from "../utils/Utils";
 import { Timer } from "../model/Timer";
-import { keyBoardEvents } from "../constants/keys";
-import { tagsNames } from "../constants/tagsNames";
-import { messages } from "../constants/messages";
-import { numbers } from "../constants/numbers";
-import { inCase } from "../constants/inCase";
+import { KEYBOARD_EVENT } from "../constants/keys";
+import { MESSAGES } from "../constants/messages";
+import * as APPEARANCE from "../constants/appearance";
+import { GAME_COMMON } from "../constants/common";
+import { ID } from "../constants/id";
 
 export class GameController {
 
@@ -44,18 +44,19 @@ export class GameController {
     this.gameOverTimer = null;
     this.utils = new Utils();
     this.ansverSend = false;
-  }
+  } 
 
-  initAnsverListener(){
-    this.gameView.spellButton.addEventListener("click",this.checkTaskAnsver.bind(this));
-  };
-  initKeyDownEventListener(){
-    document.addEventListener('keydown',this.keyDownListener.bind(this));
-  };
-
-  initKeyUpEventListener(){
+  init(){
+    document.addEventListener('keydown',this.keyDownListener.bind(this)); 
     document.addEventListener('keyup',this.keyUpListener.bind(this));
-  };
+    this.gameView.spellButton.addEventListener("click",this.checkTaskAnsver.bind(this));
+    this.gameView.spellsListContainer.addEventListener('click', this.spellList.bind(this));    
+    this.gameView.spellsListContainer.addEventListener('keydown', this.arrowKeysListener.bind(this));
+    this.gameView.spellsListContainer.addEventListener('keypress', this.spellList.bind(this));
+    this.gameView.spellsListContainer.addEventListener('mouseover',this.startChoosingSpell.bind(this));
+    this.gameView.spellsListContainer.addEventListener('mouseout',this.stopChoosingSpell.bind(this));
+    this.gameView.taskForm.addEventListener("keypress", this.checkTaskAnsver.bind(this));
+  }; 
 
   initNameOfHeroListner(){
     this.gameView.nameOfHero.addEventListener('keypress',this.checkPressedKey.bind(this));
@@ -63,29 +64,17 @@ export class GameController {
 
   initMenueListener(){
     this.gameView.menueContainer.addEventListener('click',this.startGame.bind(this));
-  };
-
-  initSpellListListener(){
-    this.gameView.spellsListContainer.addEventListener('click',this.spellList.bind(this));
-  };
-
-  initFirstAudioSpellListListener(){
-    this.gameView.spellsListContainer.addEventListener('mouseover',this.startSoundCheckSpell.bind(this));
-  };
-
-  initSecondAudioSpellListListener(){
-    this.gameView.spellsListContainer.addEventListener('mouseout',this.stopSoundCheckSpell.bind(this));
-  };
+  };  
 
   keyDownListener(ev){
-    if(ev.keyCode === keyBoardEvents.rightArrow){
-      this.playerController.presedKey=keyBoardEvents.right;
+    if(ev.keyCode === KEYBOARD_EVENT.rightArrow){
+      this.playerController.presedKey=KEYBOARD_EVENT.right;
       if(this.playerController.playerCanWalk === true){
         this.audio.playAudio(this.audio.playerWalks);
       }
     }
-    if(ev.keyCode === keyBoardEvents.leftArrow){
-      this.playerController.presedKey=keyBoardEvents.left;
+    if(ev.keyCode === KEYBOARD_EVENT.leftArrow){
+      this.playerController.presedKey=KEYBOARD_EVENT.left;
       if(this.playerController.playerCanWalk === true){
         this.audio.playAudio(this.audio.playerWalks);
       }
@@ -93,13 +82,13 @@ export class GameController {
   }
 
   keyUpListener(ev){
-    if(ev.keyCode === keyBoardEvents.rightArrow){
+    if(ev.keyCode === KEYBOARD_EVENT.rightArrow){
       this.playerController.presedKey = null;
       if(this.playerController.playerCanWalk === true){
         this.audio.stopAudio(this.audio.playerWalks);
       }
     }
-    if(ev.keyCode === keyBoardEvents.leftArrow){
+    if(ev.keyCode === KEYBOARD_EVENT.leftArrow){
       this.playerController.presedKey = null;
       if(this.playerController.playerCanWalk === true){
         this.audio.stopAudio(this.audio.playerWalks);
@@ -108,35 +97,79 @@ export class GameController {
   }
 
   checkPressedKey(ev){
-    if(ev.charCode >= keyBoardEvents.space && ev.charCode <= keyBoardEvents.at){
+    if(ev.charCode >= KEYBOARD_EVENT.space && ev.charCode <= KEYBOARD_EVENT.at){
       ev.preventDefault();
-    }else if(ev.charCode >= keyBoardEvents.squareBracket && ev.charCode <= keyBoardEvents.quote){
+    }else if(ev.charCode >= KEYBOARD_EVENT.squareBracket && ev.charCode <= KEYBOARD_EVENT.quote){
       ev.preventDefault();
-    }else if(ev.charCode >= keyBoardEvents.figureBracket && ev.charCode <= keyBoardEvents.tilda){
+    }else if(ev.charCode >= KEYBOARD_EVENT.figureBracket && ev.charCode <= KEYBOARD_EVENT.tilda){
       ev.preventDefault();
     }
   }
 
-  startSoundCheckSpell(ev){
-    if(ev.target.tagName === tagsNames.span){
-        this.audio.playAudio(this.audio.playerChecksSpell);
-        this.gameView.showHideSpellView(ev.target.parentNode.children[1]);
+  startChoosingSpell(ev){
+    if(ev.target.tagName === "SPAN"){     
+      let selectedSpell = this.gameView.spellsListContainer.querySelector(".selected");
+      if(selectedSpell){
+        this.gameView.unhighlightSpell(selectedSpell);
+        this.audio.stopAudio(this.audio.playerChecksSpell);        
+      }     
+      this.gameView.highlightSpell(ev.target);  
+      this.audio.playAudio(this.audio.playerChecksSpell);           
     }
-  }
+  };
 
-  stopSoundCheckSpell(ev){
-    if(ev.target.tagName === tagsNames.span){
-        this.audio.stopAudio(this.audio.playerChecksSpell);
-        this.gameView.showHideSpellView(ev.target.parentNode.children[1]);
+  stopChoosingSpell(ev){
+    if(ev.target.tagName === "SPAN"){        
+        this.gameView.unhighlightSpell(ev.target)
+        this.audio.stopAudio(this.audio.playerChecksSpell);        
     }
-  }
+  }  
+
+  selectSpellItem(shiftIndex){
+    let spanElements = Array.from(document.querySelectorAll(".spells-list-item span"));
+    let spanSelectedIndex = spanElements.findIndex((li) => {
+      return li.classList.contains("selected");
+    });
+    if(spanSelectedIndex > -1){        
+      this.gameView.unhighlightSpell(spanElements[spanSelectedIndex]); 
+      this.audio.stopAudio(this.audio.playerChecksSpell);     
+
+      let currentIndex = this.сheckArrIndex(spanSelectedIndex + shiftIndex, spanElements.length - 1);            
+     
+      this.gameView.highlightSpell(spanElements[currentIndex]); 
+      this.audio.playAudio(this.audio.playerChecksSpell);     
+    } 
+    else {       
+      this.gameView.highlightSpell(spanElements[0]);
+      this.audio.playAudio(this.audio.playerChecksSpell);
+    }    
+  };
+
+  сheckArrIndex(currentIndex, endIndex){         
+    if (currentIndex > endIndex)          
+        currentIndex = 0;
+    if (currentIndex < 0)
+        currentIndex = endIndex;  
+    return currentIndex;
+  };  
+
+  arrowKeysListener(ev){    
+    let shiftIndex;
+    if(ev.keyCode == KEYBOARD_EVENT.downArrow){
+      shiftIndex = 1;
+      this.selectSpellItem(shiftIndex);
+    }if(ev.keyCode == KEYBOARD_EVENT.upArrow){
+      shiftIndex = -1;
+      this.selectSpellItem(shiftIndex);
+    }      
+  };
 
   checkNameHero(){
-    if(this.gameView.nameOfHero.value === messages.emptyNameLength){
-      alert(messages.emptyName);
+    if(this.gameView.nameOfHero.value === MESSAGES.emptyNameLength){
+      alert(MESSAGES.emptyName);
       return false;
-    }else if (this.gameView.nameOfHero.value.length < messages.messages) {
-      alert(messages.shortName);
+    }else if (this.gameView.nameOfHero.value.length < MESSAGES.length) {
+      alert(MESSAGES.shortName);
       return false;
     }else{
       return true;
@@ -144,7 +177,7 @@ export class GameController {
   }
 
   RenderingLevel(){
-    if(this.playerController.character.attrs.x > numbers.endOfGameFiled){
+    if(this.playerController.character.attrs.x > APPEARANCE.COORDINATES.endOfGameFiled){
       this.playerController.backPlayerStopMove()
       this.monster = new Monster();
       this.monsterView = new MonsterView(this.stage);
@@ -154,67 +187,70 @@ export class GameController {
       this.gameView.showHideMonsterStatusBar();
       this.monsterController.createMonster();
       this.monsterController.monsterMove();
-      setTimeout(()=>{
-        this.gameView.showHideSpellsList(this.player)
+      setTimeout(()=>{        
+        this.gameView.showHideSpellsList()
       },200);
       this.audio.stopAudio(this.audio.mainMusic);
       this.audio.playAudio(this.audio.battleMusic);
     }
   }
 
-  takeTaskForSpell(spellId){
+  async takeTaskForSpell(spellId){
     switch (spellId) {
-      case inCase.fireBall:
-        setTimeout(()=>{
-          this.task = new MathTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initMathTask();
-        },1000);
+      case ID.fireBall:
+        await this.utils.pause(1000);
+        this.task = new MathTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initMathTask();
         break;
-      case inCase.iceWodge:
-        setTimeout(()=>{
-          this.task = new EnglishTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initEnglishTask();
-        },1000);
+      case ID.iceWodge:
+        await this.utils.pause(1000);
+        this.task = new EnglishTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initEnglishTask();
         break;
-      case inCase.cuttingWind:
-        setTimeout(()=>{
-          this.task = new DraggableTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initDraggableTask();
-        },1000);
+      case ID.cuttingWind:
+        await this.utils.pause(1000);
+        this.task = new DraggableTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initDraggableTask();
         break;
-      case inCase.stoneWodge:
-        setTimeout(()=>{
-          this.task = new AudioTask();
-          this.taskView = new TaskView();
-          this.taskController = new TaskController(this.task, this.taskView);
-          this.taskController.initAudioTask();
-        },1000);
+      case ID.stoneWodge:
+        await this.utils.pause(1000);
+        this.task = new AudioTask();
+        this.taskView = new TaskView();
+        this.taskController = new TaskController(this.task, this.taskView);
+        this.taskController.initAudioTask();
         break;
       default:
         return null;
-      }
+      }      
   }
 
-  spellList(ev){
-    if(ev.target.tagName === tagsNames.span){
+  spellList(ev){    
+      let spallSpan = false;
+      if(ev.target.tagName === "SPAN"){
+        spallSpan = ev.target;
+      }
+      if(ev.keyCode == KEYBOARD_EVENT.enter || ev.keyCode == KEYBOARD_EVENT.space){        
+        spallSpan = document.activeElement;
+      }
+      if(spallSpan){
         this.spellView = new SpellView(this.stage);
         this.spellController = new SpellController(this.spellView);
-        this.gameView.showHideSpellsList(this.player);
-        this.spellController.createPlayerSpell(ev.target.parentNode.id);
-        this.spellController.createMonsterSpell();
-        this.takeTaskForSpell(ev.target.parentNode.id);
-      }
-  };
-
+        this.gameView.showHideSpellsList();        
+        this.spellController.createPlayerSpell(spallSpan.parentNode.id);
+        this.spellController.createMonsterSpell();        
+        this.takeTaskForSpell(spallSpan.parentNode.id);
+      }     
+  }; 
+ 
   playerAttack(){
     this.audio.playAudio(this.audio.taskAccept);
-    this.monster.getDamaged(numbers.heroDmg);
+    this.monster.getDamaged(APPEARANCE.HEROES.player.damage);   
     setTimeout(()=>{
       this.audio.playAudio(this.audio.playerCasts);
       this.spellController.playerCastSpell(this.playerController);
@@ -225,7 +261,7 @@ export class GameController {
 
   monsterAttack(){
     this.audio.playAudio(this.audio.taskDecline);
-    this.player.getDamaged(numbers.monsterDmg);
+    this.player.getDamaged(APPEARANCE.HEROES.monster.damage);   
     setTimeout(()=>{
       this.audio.playAudio(this.audio.playerCasts);
       this.spellController.monsterCastSpell();
@@ -240,21 +276,23 @@ export class GameController {
     },4000);
   }
 
-  async checkTaskAnsver(ev){
-    ev.preventDefault();
-    if(ev.target.getAttribute("draggable")){
-      await this.taskController.checkDraggableResult(ev);
-    }else{
-      await this.taskController.checkInputResult(ev);
-    }
-    if(!this.ansverSend){
-      this.ansverSend = true;
-      if(this.taskController.isCorrect){
-        this.playerAttack()
-      }else{
-        this.monsterAttack()
+  async checkTaskAnsver(ev){    
+    if(ev.target == this.taskView.spellButton || ev.keyCode == KEYBOARD_EVENT.enter){
+      ev.preventDefault();
+      if(!this.ansverSend){
+        this.ansverSend = true;
+        if(this.taskView.spellButton.hasAttribute("draggable")){
+          await this.taskController.checkDraggableResult(ev);
+        }else{
+          await this.taskController.checkInputResult(ev);
+        }
+        if(this.taskController.isCorrect){
+          this.playerAttack()
+        }else{
+          this.monsterAttack()
+        }
+        this.hpCharactersTrigger();
       }
-      this.hpCharactersTrigger();
     }
   };
 
@@ -272,30 +310,30 @@ export class GameController {
   }
 
   hpCharactersTrigger(){
-    if(this.player.hp === numbers.zero){
+    if(this.player.hp === 0){
       setTimeout(()=>{
         this.stopGame();
       },4000);
-    }else if(this.monster.hp === numbers.zero){
+    }else if(this.monster.hp === 0){
       setTimeout(()=>{
         this.playerController.playerCanWalk = true;
         this.audio.stopAudio(this.audio.battleMusic);
         this.audio.playAudio(this.audio.mainMusic);
         this.gameView.showHideMonsterStatusBar();
         this.monsterController.destroyMonster();
-        this.player.addToScore(numbers.monsterPoints);
+        this.player.addToScore(APPEARANCE.HEROES.monster.points);    
         this.gameView.renderHeroScore(this.player);
       },4000);
     }else{
       setTimeout(()=>{
-        this.gameView.showHideSpellsList(this.player);
+        this.gameView.showHideSpellsList();
       },4000);
     }
   }
 
   startGameOverTimer(){
     this.gameOver = setInterval(()=>{
-      if(this.timer.minutes >= numbers.gameOverTime){
+      if(this.timer.minutes >= GAME_COMMON.gameOverTime){
         this.stopGame()
       }
     },1000)
@@ -314,37 +352,32 @@ export class GameController {
     this.gameView.createHeroImg(this.gameView.characterIcon);
     this.gameView.createHeroStatusBar(this.player);
     this.playerView = new PlayerView(this.stage);
-    this.playerController = new PlayerController(this.player,this.playerView);
-    this.initKeyDownEventListener();
-    this.initKeyUpEventListener();
-    this.initAnsverListener();
+    this.playerController = new PlayerController(this.player,this.playerView);   
     this.playerController.setCoordinatesSprites();
     this.playerController.createPlayer();
     this.playerController.playerCanWalk = true;
-    this.gameView.initRenderLevel(this.RenderingLevel.bind(this),this.playerController.layer);
-    this.initSpellListListener();
-    this.initFirstAudioSpellListListener();
-    this.initSecondAudioSpellListListener();
+    this.gameView.initRenderLevel(this.RenderingLevel.bind(this),this.playerController.layer);    
+    this.init();   
   }
 
   startGame(ev){
     switch (ev.target.id) {
-      case inCase.buttonYes:
+      case ID.buttonYes:
         this.gameView.switchClasses(this.gameView.menueContainer.children[0]);
         this.gameView.switchClasses(this.gameView.menueContainer.children[1]);
         this.gameView.createHeroImg(this.gameView.heroImg);
         this.audio.playAudio(this.audio.mainMusic);
         break;
-      case inCase.raceRadio:
+      case ID.raceRadio:
         this.gameView.createHeroImg(this.gameView.heroImg);
         break;
-      case inCase.radioMan:
+      case ID.radioMan:
         this.gameView.createHeroImg(this.gameView.heroImg);
         break;
-      case inCase.radioWoman:
+      case ID.radioWoman:
         this.gameView.createHeroImg(this.gameView.heroImg);
         break;
-      case inCase.start:
+      case ID.start:
         if(this.checkNameHero()){
           this.createGame();
         }

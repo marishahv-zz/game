@@ -61,5 +61,11 @@ export class Utils{
             return resultsObj.userList;
         }
         else return "There are no records in localStorage."
+    };  
+    
+    async pause(time){
+        return new Promise((resolve) => {
+            setTimeout(resolve, time);
+        });
     };
 }

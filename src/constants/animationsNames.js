@@ -1,4 +1,4 @@
-export const animationsNames = {
+export const ANIMATION_NAMES = {
   "heroStay" : "stay",
   "heroWalking" : "walking",
   "heroCast" : "cast",
